@@ -10,7 +10,7 @@ Base.metadata.create_all(Engine)
 
 
 # vending machines table
-class vending_machine(Base):
+class Vending_machine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
     location = Column(String(100))
@@ -20,7 +20,7 @@ class vending_machine(Base):
 
 
 # consumables table
-class consumables(Base):
+class Consumables(Base):
     __tablename__ = 'consuamables'
     id = Column(Integer, primary_key=True)
     product_name = Column(String(100))
