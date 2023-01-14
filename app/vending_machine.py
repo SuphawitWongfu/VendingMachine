@@ -1,15 +1,20 @@
 from app.schema import *
 from flask import Blueprint, request, jsonify, redirect, url_for, flash
 
+
+"""
+This file contains CRUD operation regarding vending_machine table
+"""
+
 vending_machine = Blueprint('vending_machine', __name__)
 
 
 @vending_machine.route("/add_vendings/", methods=["GET", "POST"])
 def add_vending_machine():
     args = request.args
-    if args and "location" in args:
+    if args and all(k in args for k in ("location", "name")):
         session = Session()
-        new_vend = Vending_machine(args["location"])
+        new_vend = Vending_machine(args["name"], args["location"])
         try:
             session.add(new_vend)
             session.commit()
@@ -28,7 +33,7 @@ def view_vending_machine():
         return '', 204  # return 204 NO CONTENT if the table is empty
     vendings = []
     for query in queries:
-        vending = {'id': query.id, 'location': query.location}
+        vending = {'id': query.id, 'name': query.name, 'location': query.location, 'start_service_at': query.start_service_at}
         vendings.append(vending)
     return jsonify(vendings)
 
@@ -40,9 +45,10 @@ def edit_vending_machine():
         session = Session()
         old_vending_info = session.query(Vending_machine).filter_by(id=args["id"]).first()
 
-        if args["location"]:
+        if "location" in args:
             old_vending_info.location = args["location"]
-
+        if "name" in args:
+            old_vending_info.name = args["name"]
         try:
             session.commit()
         except:
