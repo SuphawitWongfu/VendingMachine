@@ -14,23 +14,42 @@ Base.metadata.create_all(Engine)
 class Vending_machine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
-    name = Column(String(100))
-    location = Column(String(100))
-    start_service_at = Column(DateTime)
+    machine_name = Column(String(100))
+    machine_code = Column(Integer)
+    machine_location = Column(String(100))
+    installed_at = Column(DateTime)
 
-    def __init__(self, name, location):
-        self.name = name
-        self.location = location
-        self.start_service_at = dt.datetime.utcnow()
+    def __init__(self, name, code, location):
+        self.machine_name = name
+        self.machine_code = code
+        self.machine_location = location
+        self.installed_at = dt.datetime.utcnow()
 
 
 # consumables table
-class Consumables(Base):
-    __tablename__ = 'consuamables'
+class Products(Base):
+    __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
     product_name = Column(String(100))
+    product_code = Column(Integer)
     product_quantity = Column(Integer)
+    price_per_unit = Column(Float)
 
-    def __init__(self, product_name, product_quantity):
+    def __init__(self, product_name, product_code, product_quantity, price_per_unit):
         self.product_name = product_name
         self.product_quantity = product_quantity
+        self.product_code = product_code
+        self.price_per_unit = price_per_unit
+
+
+class MachineStock(Base):
+    __tablename__ = "machine_stocks"
+    id = Column(Integer, primary_key=True)
+    machine_id = Column(Integer, ForeignKey('vending_machine.id'))
+    product_id = Column(Integer, ForeignKey('products.id'))
+    quantity = Column(Integer)
+
+    def __init__(self, machine_id, product_id, quantity):
+        self.machine_id = machine_id
+        self.product_id = product_id
+        self.quantity = quantity
