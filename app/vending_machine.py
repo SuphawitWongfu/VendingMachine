@@ -12,9 +12,10 @@ vending_machine = Blueprint('vending_machine', __name__)
 @vending_machine.route("/add_vendings/", methods=["GET", "POST"])
 def add_vending_machine():
     args = request.args
-    if args and all(k in args for k in ("location", "name")):
+    if args and all(k in args for k in ("location", "name", "code")):
         session = Session()
-        new_vend = Vending_machine(args["name"], args["location"])
+        # noinspection PyTypeChecker
+        new_vend = Vending_machine(args["name"], args["code"], args["location"])
         try:
             session.add(new_vend)
             session.commit()
@@ -33,7 +34,8 @@ def view_vending_machine():
         return '', 204  # return 204 NO CONTENT if the table is empty
     vendings = []
     for query in queries:
-        vending = {'id': query.id, 'name': query.name, 'location': query.location, 'start_service_at': query.start_service_at}
+        vending = {'id': query.id, 'name': query.machine_name, 'machine_code': query.machine_code,
+                   'location': query.machine_location, 'start_service_at': query.installed_at}
         vendings.append(vending)
     return jsonify(vendings)
 
@@ -44,11 +46,12 @@ def edit_vending_machine():
     if args and args["id"]:
         session = Session()
         old_vending_info = session.query(Vending_machine).filter_by(id=args["id"]).first()
-
         if "location" in args:
-            old_vending_info.location = args["location"]
+            old_vending_info.machine_location = args["location"]
         if "name" in args:
-            old_vending_info.name = args["name"]
+            old_vending_info.machine_name = args["name"]
+        if "code" in args:
+            old_vending_info.machine_code = args["code"]
         try:
             session.commit()
         except:

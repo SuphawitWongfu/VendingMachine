@@ -15,7 +15,7 @@ class Vending_machine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
     machine_name = Column(String(100))
-    machine_code = Column(Integer)
+    machine_code = Column(Integer, unique=True)
     machine_location = Column(String(100))
     installed_at = Column(DateTime)
 
@@ -31,7 +31,7 @@ class Products(Base):
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
     product_name = Column(String(100))
-    product_code = Column(Integer)
+    product_code = Column(Integer, unique=True)
     product_quantity = Column(Integer)
     price_per_unit = Column(Float)
 
@@ -45,7 +45,7 @@ class Products(Base):
 class MachineStock(Base):
     __tablename__ = "machine_stocks"
     id = Column(Integer, primary_key=True)
-    machine_id = Column(Integer, ForeignKey('vending_machine.id'))
+    machine_id = Column(Integer, ForeignKey('vending_machines.id'))
     product_id = Column(Integer, ForeignKey('products.id'))
     quantity = Column(Integer)
 
