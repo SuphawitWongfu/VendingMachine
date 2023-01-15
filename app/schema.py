@@ -52,9 +52,9 @@ class Products(Base):
 
     def obj_to_dict(self):
         query_dict = {
-            "product_name": self.machine_id,
-            "product_quantity": self.product_id,
-            "product_code": self.quantity,
+            "product_name": self.product_name,
+            "product_quantity": self.product_quantity,
+            "product_code": self.product_code,
             "price_per_unit":  self.price_per_unit
         }
         return query_dict

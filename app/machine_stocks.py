@@ -78,3 +78,21 @@ def delete_vending_machine():
         except:
             session.close()
     return redirect(url_for("machine_stocks.view_machine_stocks"))
+
+
+@machine_stocks.route("/inspect_stocks/", methods=["GET"])
+def inspect_stock():
+    query_strings = request.args
+    noContent204 = '', 204
+    if query_strings and "machine_id" in query_strings:
+        session = Session()
+        machine_obj_list = session.query(MachineStock).filter_by(machine_id=query_strings["machine_id"]).all()
+        stock_listing = []
+        for listing in machine_obj_list:
+            product_obj = session.query(Products).filter_by(id=listing.product_id).first()
+            product_dict = product_obj.obj_to_dict()
+            product_dict["product_quantity"] = listing.quantity
+            stock_listing.append(product_dict)
+        session.close()
+        return jsonify(stock_listing)
+    return noContent204
