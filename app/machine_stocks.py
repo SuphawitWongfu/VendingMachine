@@ -1,8 +1,9 @@
-from app.schema import *
 from app.queryUtils import *
 from flask import Blueprint, request, jsonify, redirect, url_for, flash
 
 machine_stocks = Blueprint("machine_stocks", __name__)
+
+noContent204 = '', 204
 
 
 def addProductToMachine(query_strings):
@@ -25,13 +26,10 @@ def check_item_adding_validity(query_strings):
     QueryStringsAreValid = areAllQueryStringPresent(query_strings, ("machine_id", "product_id", "quantity"))
     # one machine cannot have the same entry of the same type of product
     noDuplicatesProductInSameMachine = not isExist(MachineStock, {"product_id": query_strings["product_id"],
-                                                                      "machine_id": query_strings["machine_id"]})
+                                                                  "machine_id": query_strings["machine_id"]})
     productExist = isExist(Products, {"id": query_strings["product_id"]})
     machineExist = isExist(Vending_machine, {"id": query_strings["machine_id"]})
     return QueryStringsAreValid and noDuplicatesProductInSameMachine and productExist and machineExist
-
-
-
 
 
 @machine_stocks.route("/add_machine_stocks/", methods=["GET", "POST"])
@@ -65,6 +63,7 @@ def edit_vending_machine():
 
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
+
 @machine_stocks.route("/delete_machine_stocks/", methods=["GET", "POST", "DELETE"])
 def delete_vending_machine():
     query_strings = request.args
@@ -80,19 +79,33 @@ def delete_vending_machine():
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
 
+def create_listing(machine_id):
+    session = Session()
+    try:
+        # query vending machine for id and name
+        stock_obj_list = session.query(MachineStock).filter_by(machine_id=machine_id).all()
+        machine_obj = session.query(Vending_machine).filter_by(id=machine_id).first()
+        stock_dict = {"machine_id": machine_obj.id, "machine_name": machine_obj.machine_name}
+        product_listing = []
+        # query products for product data
+        for listing in stock_obj_list:
+            product_obj = session.query(Products).filter_by(id=listing.product_id).first()
+            product_dict = product_obj.obj_to_dict()
+            # need to change this to quantity in the vending machine
+            product_dict["product_quantity"] = listing.quantity
+            product_listing.append(product_dict)
+        session.close()
+        stock_dict["products"] = product_listing
+    except:
+        session.close()
+        return noContent204
+    return stock_dict
+
+
 @machine_stocks.route("/inspect_stocks/", methods=["GET"])
 def inspect_stock():
     query_strings = request.args
-    noContent204 = '', 204
     if query_strings and "machine_id" in query_strings:
-        session = Session()
-        machine_obj_list = session.query(MachineStock).filter_by(machine_id=query_strings["machine_id"]).all()
-        stock_listing = []
-        for listing in machine_obj_list:
-            product_obj = session.query(Products).filter_by(id=listing.product_id).first()
-            product_dict = product_obj.obj_to_dict()
-            product_dict["product_quantity"] = listing.quantity
-            stock_listing.append(product_dict)
-        session.close()
-        return jsonify(stock_listing)
+        stock_dict = create_listing(query_strings["machine_id"])
+        return jsonify(stock_dict)
     return noContent204
