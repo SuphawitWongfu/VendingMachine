@@ -8,6 +8,7 @@ This file is for running the app. To run the app, type "flask run" in the termin
 
 app = Flask(__name__)
 
+# register Blueprints
 from app.vending_machine import vending_machine
 app.register_blueprint(vending_machine)
 from app.products import products
@@ -19,7 +20,7 @@ app.config['SECRET_KEY'] = 'thisisasecret'
 def index():
     return "Venting Machine"
 
-
+# setup app config
 app.config['SQLALCHEMY_DATABASE_URI'] = mysql_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
