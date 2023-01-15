@@ -64,3 +64,17 @@ def edit_vending_machine():
         updateDatabaseRowByID(MachineStock, query_strings)
 
     return redirect(url_for("machine_stocks.view_machine_stocks"))
+
+@machine_stocks.route("/delete_machine_stocks/", methods=["GET", "POST", "DELETE"])
+def delete_vending_machine():
+    query_strings = request.args
+    if query_strings and "id" in query_strings:
+        session = Session()
+        unwanted_product = session.query(MachineStock).filter_by(id=query_strings["id"]).first()
+        try:
+            session.delete(unwanted_product)
+            session.commit()
+            session.close()
+        except:
+            session.close()
+    return redirect(url_for("machine_stocks.view_machine_stocks"))
