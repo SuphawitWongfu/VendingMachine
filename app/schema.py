@@ -25,6 +25,15 @@ class Vending_machine(Base):
         self.machine_location = location
         self.installed_at = dt.datetime.utcnow()
 
+    def obj_to_dict(self):
+        query_dict = {
+            "machine_name": self.machine_name,
+            "machine_quantity": self.machine_code,
+            "machine_code": self.machine_location,
+            "installed_at":  self.installed_at
+        }
+        return query_dict
+
 
 # consumables table
 class Products(Base):
@@ -40,6 +49,15 @@ class Products(Base):
         self.product_quantity = product_quantity
         self.product_code = product_code
         self.price_per_unit = price_per_unit
+
+    def obj_to_dict(self):
+        query_dict = {
+            "product_name": self.machine_id,
+            "product_quantity": self.product_id,
+            "product_code": self.quantity,
+            "price_per_unit":  self.price_per_unit
+        }
+        return query_dict
 
 
 class MachineStock(Base):
