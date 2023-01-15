@@ -10,6 +10,8 @@ app = Flask(__name__)
 
 from app.vending_machine import vending_machine
 app.register_blueprint(vending_machine)
+from app.products import products
+app.register_blueprint(products)
 
 app.config['SECRET_KEY'] = 'thisisasecret'
 
