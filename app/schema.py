@@ -53,3 +53,11 @@ class MachineStock(Base):
         self.machine_id = machine_id
         self.product_id = product_id
         self.quantity = quantity
+
+    def obj_to_dict(self):
+        query_dict = {
+            "machine_id": self.machine_id,
+            "product_id": self.product_id,
+            "quantity": self.quantity
+        }
+        return query_dict

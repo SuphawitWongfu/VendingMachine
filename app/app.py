@@ -13,6 +13,8 @@ from app.vending_machine import vending_machine
 app.register_blueprint(vending_machine)
 from app.products import products
 app.register_blueprint(products)
+from app.machine_stocks import machine_stocks
+app.register_blueprint(machine_stocks)
 
 app.config['SECRET_KEY'] = 'thisisasecret'
 
