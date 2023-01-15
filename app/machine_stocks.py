@@ -24,11 +24,14 @@ def addProductToMachine(query_strings):
 def check_item_adding_validity(query_strings):
     QueryStringsAreValid = areAllQueryStringPresent(query_strings, ("machine_id", "product_id", "quantity"))
     # one machine cannot have the same entry of the same type of product
-    noDuplicatesProductInSameMachine = not isExistByID(MachineStock, {"product_id": query_strings["product_id"],
+    noDuplicatesProductInSameMachine = not isExist(MachineStock, {"product_id": query_strings["product_id"],
                                                                       "machine_id": query_strings["machine_id"]})
-    productExist = isExistByID(Products, {"id": query_strings["product_id"]})
-    machineExist = isExistByID(Vending_machine, {"id": query_strings["machine_id"]})
+    productExist = isExist(Products, {"id": query_strings["product_id"]})
+    machineExist = isExist(Vending_machine, {"id": query_strings["machine_id"]})
     return QueryStringsAreValid and noDuplicatesProductInSameMachine and productExist and machineExist
+
+
+
 
 
 @machine_stocks.route("/add_machine_stocks/", methods=["GET", "POST"])
@@ -51,3 +54,13 @@ def view_machine_stocks():
         return noContent204  # return 204 NO CONTENT if the table is empty
     stock_list = dict_helper(queries)
     return jsonify(stock_list)
+
+
+@machine_stocks.route("/edit_machine_stocks/", methods=["GET", "POST"])
+def edit_vending_machine():
+    query_strings = request.args
+    # check if the target product exist in the database
+    if query_strings and "id" in query_strings:
+        updateDatabaseRowByID(MachineStock, query_strings)
+
+    return redirect(url_for("machine_stocks.view_machine_stocks"))
