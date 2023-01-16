@@ -17,6 +17,7 @@ def addObjToDB(obj):
     except:
         session.close()
 
+
 def selectObj(table_name, search_params):
     session = Session()
     obj = None
@@ -27,6 +28,7 @@ def selectObj(table_name, search_params):
         session.close()
     return obj
 
+
 def selectObjList(table_name, search_params):
     session = Session()
     obj_list = None
@@ -36,6 +38,7 @@ def selectObjList(table_name, search_params):
     except:
         session.close()
     return obj_list
+
 
 def deleteObjFromDB(obj):
     if obj is not None:
@@ -87,8 +90,9 @@ def updateWarehouseQuantity(product_id, quantity_in_machine, new_quantity):
 
 def updateDatabaseRowByID(table_class, query_strings):
     session = Session()
-
     current_item = session.query(table_class).filter_by(id=query_strings["id"]).first()
+    if current_item is None:
+        return
     for query_string in query_strings.keys():
         setattr(current_item, query_string, query_strings[query_string])
         # case for updating machine_stocks table

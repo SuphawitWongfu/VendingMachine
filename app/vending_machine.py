@@ -9,17 +9,12 @@ all endpoints are redirected back to /vendings/ which return JSON object of the 
 vending_machine = Blueprint('vending_machine', __name__)
 
 
-def add_validate(query_strings):
-    QueryStringsAreValid = areAllQueryStringPresent(query_strings, ("machine_name","machine_location"))
-    # one machine cannot have the same entry of the same type of product
-    return QueryStringsAreValid
-
 # add new machine to vending machine table
 @vending_machine.route("/add_vendings/", methods=["GET", "POST"])
 def add_vending_machine():
     query_strings = request.args
     # making sure that all query string needed are presented
-    addable = add_validate(query_strings)
+    addable = areAllQueryStringPresent(query_strings, ("machine_name", "machine_location"))
     if addable:
         # noinspection PyTypeChecker
         new_vend = Vending_machine(query_strings["machine_name"], query_strings["machine_location"])
@@ -30,17 +25,11 @@ def add_vending_machine():
 # view all vending machines in the table
 @vending_machine.route("/vendings/", methods=["GET"])
 def view_vending_machine():
-    session = Session()
-    queries = session.query(Vending_machine).all()
-    session.close()
-    if not queries:
+    queries = getAllFromTable(Vending_machine)
+    if queries is None:
         return noContent204  # return 204 NO CONTENT if the table is empty
-    vendings = []
-    for query in queries:
-        vending = {'id': query.id, 'name': query.machine_name,
-                   'location': query.machine_location, 'start_service_at': query.installed_at}
-        vendings.append(vending)
-    return jsonify(vendings)
+    vending_machines = dict_helper(queries)
+    return jsonify(vending_machines)
 
 
 # edit an instance of vending machine

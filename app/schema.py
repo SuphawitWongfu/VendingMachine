@@ -28,9 +28,9 @@ class Vending_machine(Base):
 
     def obj_to_dict(self):
         query_dict = {
-            "machine_name": self.machine_name,
-            "machine_quantity": self.machine_code,
-            "machine_code": self.machine_location,
+            "id": self.id,
+            "name": self.machine_name,
+            "location": self.machine_location,
             "installed_at":  self.installed_at
         }
         return query_dict
