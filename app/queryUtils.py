@@ -9,13 +9,14 @@ def dict_helper(objlist):
 
 
 def addObjToDB(obj):
-    session = Session()
-    try:
-        session.add(obj)
-        session.commit()
-        session.close()
-    except:
-        session.close()
+    if obj is not None:
+        session = Session()
+        try:
+            session.add(obj)
+            session.commit()
+            session.close()
+        except:
+            session.close()
 
 
 def selectObj(table_name, search_params):
@@ -79,13 +80,18 @@ def isExist(table_name, search_params):
 
 def updateWarehouseQuantity(product_id, quantity_in_machine, new_quantity):
     session = Session()
-    product_in_warehouse = session.query(Products).filter_by(id=product_id).first()
-    print(product_in_warehouse.product_quantity, new_quantity, quantity_in_machine)
-    product_in_warehouse.product_quantity = int(product_in_warehouse.product_quantity) - (
+    quantity_validation = None
+    try:
+        product_in_warehouse = session.query(Products).filter_by(id=product_id).first()
+        product_in_warehouse.product_quantity = int(product_in_warehouse.product_quantity) - (
             int(new_quantity) - int(quantity_in_machine))
-    print(product_in_warehouse.product_quantity, new_quantity, quantity_in_machine)
-    session.commit()
-    session.close()
+        if product_in_warehouse.product_quantity >= 0:
+            quantity_validation = product_in_warehouse.product_quantity
+            session.commit()
+        session.close()
+    except:
+        session.close()
+    return quantity_validation
 
 
 def updateDatabaseRowByID(table_class, query_strings):
@@ -96,8 +102,7 @@ def updateDatabaseRowByID(table_class, query_strings):
     for query_string in query_strings.keys():
         setattr(current_item, query_string, query_strings[query_string])
         # case for updating machine_stocks table
-        if type(current_item) is MachineStock and query_string == "quantity":
-            print(current_item.machine_id, current_item.product_id, query_strings["quantity"])
-            updateWarehouseQuantity(current_item.machine_id, current_item.product_id, query_strings["quantity"])
+        # if type(current_item) is MachineStock and query_string == "quantity":
+            # updateWarehouseQuantity(current_item.machine_id, current_item.product_id, query_strings["quantity"])
     session.commit()
     session.close()

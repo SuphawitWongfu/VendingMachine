@@ -9,15 +9,19 @@ all endpoints are redirected back to /products/ which return JSON object of the 
 
 products = Blueprint('products', __name__)
 
-
+def add_validate(query_strings):
+    queryStringsAreValid = areAllQueryStringPresent(query_strings,
+                                       ("product_name", "product_code", "product_quantity", "price_per_unit"))
+    quantityNotNegative = int(query_strings["product_quantity"]) >= 0
+    priceNotNegative = int(query_strings["price_per_unit"]) >= 0
+    return queryStringsAreValid and quantityNotNegative and priceNotNegative
 # add new products to the table
 @products.route("/add_products/", methods=["GET", "POST"])
 def add_products():
     #  making sure that all query string needed are presented
     query_strings = request.args
     # making sure that all query string needed are presented
-    addable = areAllQueryStringPresent(query_strings,
-                                       ("product_name", "product_code", "product_quantity", "price_per_unit"))
+    addable = add_validate(query_strings)
     if addable:
         # noinspection PyTypeChecker
         new_vend = Products(query_strings["product_name"], query_strings["product_code"],
