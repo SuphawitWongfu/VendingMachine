@@ -1,3 +1,5 @@
+import enum
+
 from sqlalchemy import Column, Enum, Numeric, String, Integer, ForeignKey, DateTime, Boolean, Float, Text, MetaData, \
     Table
 from app.engine import Engine, Session, Base
@@ -10,18 +12,17 @@ This file contain all tables of the database
 Base.metadata.create_all(Engine)
 
 
+
 # vending machines table
 class Vending_machine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
     machine_name = Column(String(100))
-    machine_code = Column(Integer, unique=True)
     machine_location = Column(String(100))
     installed_at = Column(DateTime)
 
-    def __init__(self, name, code, location):
+    def __init__(self, name, location):
         self.machine_name = name
-        self.machine_code = code
         self.machine_location = location
         self.installed_at = dt.datetime.utcnow()
 

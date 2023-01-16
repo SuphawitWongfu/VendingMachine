@@ -3,7 +3,6 @@ from flask import Blueprint, request, jsonify, redirect, url_for, flash
 
 machine_stocks = Blueprint("machine_stocks", __name__)
 
-noContent204 = '', 204
 
 
 def addProductToMachine(query_strings):

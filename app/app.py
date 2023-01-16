@@ -29,3 +29,5 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.app_context().push()
 
 Base.metadata.create_all(Engine)
+
+app.run(debug=True)
