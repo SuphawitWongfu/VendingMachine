@@ -1,6 +1,7 @@
 from app.schema import *
 
 noContent204 = '', 204
+badRequest400 = '', 400
 
 
 def dict_helper(objlist):
@@ -85,7 +86,7 @@ def updateWarehouseQuantity(product_id, quantity_in_machine, new_quantity):
         product_in_warehouse = session.query(Products).filter_by(id=product_id).first()
         product_in_warehouse.product_quantity = int(product_in_warehouse.product_quantity) - (
             int(new_quantity) - int(quantity_in_machine))
-        if product_in_warehouse.product_quantity >= 0:
+        if product_in_warehouse.product_quantity >= 0 and int(new_quantity) >= 0 and int(quantity_in_machine) >= 0:
             quantity_validation = product_in_warehouse.product_quantity
             session.commit()
         session.close()

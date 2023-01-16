@@ -4,7 +4,6 @@ from flask import Blueprint, request, jsonify, redirect, url_for, flash
 machine_stocks = Blueprint("machine_stocks", __name__)
 
 
-
 def add_validate(query_strings):
     QueryStringsAreValid = areAllQueryStringPresent(query_strings, ("machine_id", "product_id", "quantity"))
     # one machine cannot have the same entry of the same type of product
@@ -26,11 +25,12 @@ def add_machine_stocks():
     query_strings = request.args
     addable = add_validate(query_strings)
 
-    if addable:
-        new_machine_stock = MachineStock(int(query_strings["machine_id"]), int(query_strings["product_id"]),
-                                         int(query_strings["quantity"]))
-        addObjToDB(new_machine_stock)
-        updateWarehouseQuantity(query_strings["product_id"], 0, query_strings["quantity"])
+    if not addable:
+        return badRequest400
+    new_machine_stock = MachineStock(int(query_strings["machine_id"]), int(query_strings["product_id"]),
+                                     int(query_strings["quantity"]))
+    addObjToDB(new_machine_stock)
+    updateWarehouseQuantity(query_strings["product_id"], 0, query_strings["quantity"])
 
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
@@ -45,7 +45,6 @@ def view_machine_stocks():
     return jsonify(stock_list)
 
 
-
 @machine_stocks.route("/edit_machine_stocks/", methods=["GET", "POST"])
 def edit_machine_stock():
     query_strings = request.args
@@ -53,7 +52,8 @@ def edit_machine_stock():
     if query_strings and "id" in query_strings and isExist(MachineStock, {"id": query_strings["id"]}):
         stock_obj = selectObj(MachineStock, {"id": query_strings["id"]})
         quantity_in_machine = stock_obj.quantity
-        quantity_validation = updateWarehouseQuantity(stock_obj.product_id, quantity_in_machine, query_strings["quantity"])
+        quantity_validation = updateWarehouseQuantity(stock_obj.product_id, quantity_in_machine,
+                                                      query_strings["quantity"])
         if quantity_validation is not None:
             updateDatabaseRowByID(MachineStock, query_strings)
 
@@ -63,7 +63,10 @@ def edit_machine_stock():
 @machine_stocks.route("/delete_machine_stocks/", methods=["GET", "POST", "DELETE"])
 def delete_machine_stock():
     query_strings = request.args
-    if query_strings and "id" in query_strings and isExist(MachineStock, {"id": query_strings["id"]}):
+    provided_id = areAllQueryStringPresent(query_strings, ("id",))
+    if not provided_id:
+        return badRequest400
+    if isExist(MachineStock, {"id": query_strings["id"]}):
         unwanted_product = selectObj(MachineStock, {"id": query_strings["id"]})
         updateWarehouseQuantity(unwanted_product.product_id, unwanted_product.quantity, 0)
         deleteObjFromDB(unwanted_product)
@@ -75,7 +78,7 @@ def create_listing(machine_id):
     try:
         # query vending machine for id and name
         stock_obj_list = selectObjList(MachineStock, {"machine_id": machine_id})
-        machine_obj = selectObj(Vending_machine, {"id":machine_id})
+        machine_obj = selectObj(Vending_machine, {"id": machine_id})
         stock_dict = {"machine_id": machine_obj.id, "machine_name": machine_obj.machine_name}
         product_listing = []
         # query products for product data

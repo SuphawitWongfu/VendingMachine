@@ -12,7 +12,6 @@ This file contain all tables of the database
 Base.metadata.create_all(Engine)
 
 
-
 # vending machines table
 class Vending_machine(Base):
     __tablename__ = 'vending_machines'
@@ -31,7 +30,7 @@ class Vending_machine(Base):
             "id": self.id,
             "name": self.machine_name,
             "location": self.machine_location,
-            "installed_at":  self.installed_at
+            "installed_at": self.installed_at
         }
         return query_dict
 
@@ -53,10 +52,11 @@ class Products(Base):
 
     def obj_to_dict(self):
         query_dict = {
+            "id": self.id,
             "product_name": self.product_name,
             "product_quantity": self.product_quantity,
             "product_code": self.product_code,
-            "price_per_unit":  self.price_per_unit
+            "price_per_unit": self.price_per_unit
         }
         return query_dict
 
@@ -75,6 +75,7 @@ class MachineStock(Base):
 
     def obj_to_dict(self):
         query_dict = {
+            "id": self.id,
             "machine_id": self.machine_id,
             "product_id": self.product_id,
             "quantity": self.quantity
