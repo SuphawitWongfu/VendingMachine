@@ -9,6 +9,12 @@ all endpoints are redirected back to /products/ which return JSON object of the 
 
 products = Blueprint('products', __name__)
 
+'''
+this function are for validating if the query strings argument are valid or not
+query_strings - the query strings which are passed in as argument in the url
+return true if all criteria are passed else return false
+'''
+
 
 def add_validate(query_strings):
     queryStringsAreValid = areAllQueryStringPresent(query_strings,

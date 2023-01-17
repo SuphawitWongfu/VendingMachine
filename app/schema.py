@@ -35,7 +35,7 @@ class Vending_machine(Base):
         return query_dict
 
 
-# consumables table
+# products table
 class Products(Base):
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
@@ -61,6 +61,7 @@ class Products(Base):
         return query_dict
 
 
+# stocks in machine table
 class MachineStock(Base):
     __tablename__ = "machine_stocks"
     id = Column(Integer, primary_key=True)
