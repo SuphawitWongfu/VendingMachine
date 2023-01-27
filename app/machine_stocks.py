@@ -20,7 +20,7 @@ def add_validate(query_strings):
     noDuplicatesProductInSameMachine = not isExist(MachineStock, {"product_id": query_strings["product_id"],
                                                                   "machine_id": query_strings["machine_id"]})
     productExist = isExist(Products, {"id": query_strings["product_id"]})
-    machineExist = isExist(Vending_machine, {"id": query_strings["machine_id"]})
+    machineExist = isExist(vendingMachine, {"id": query_strings["machine_id"]})
     quantityNotNegative = int(query_strings["quantity"]) >= 0
     productEnough = False
     if productExist:
@@ -99,7 +99,7 @@ def create_listing(machine_id):
     try:
         # query vending machine for id and name
         stock_obj_list = selectObjList(MachineStock, {"machine_id": machine_id})
-        machine_obj = selectObj(Vending_machine, {"id": machine_id})
+        machine_obj = selectObj(vendingMachine, {"id": machine_id})
         stock_dict = {"machine_id": machine_obj.id, "machine_name": machine_obj.machine_name}
         product_listing = []
         # query products for product data

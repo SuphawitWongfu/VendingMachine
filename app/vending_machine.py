@@ -17,7 +17,7 @@ def add_vending_machine():
     addable = areAllQueryStringPresent(query_strings, ("machine_name", "machine_location"))
     if not addable:
         return badRequest400
-    new_vend = Vending_machine(query_strings["machine_name"], query_strings["machine_location"])
+    new_vend = vendingMachine(query_strings["machine_name"], query_strings["machine_location"])
     addObjToDB(new_vend)
     return redirect(url_for("vending_machine.view_vending_machine"))
 
@@ -25,7 +25,7 @@ def add_vending_machine():
 # view all vending machines in the table
 @vending_machine.route("/vendings/", methods=["GET"])
 def view_vending_machine():
-    queries = getAllFromTable(Vending_machine)
+    queries = getAllFromTable(vendingMachine)
     if not queries:
         return noContent204  # return 204 NO CONTENT if the table is empty
     vending_machines = dict_helper(queries)
@@ -38,7 +38,7 @@ def edit_vending_machine():
     query_strings = request.args
     # check if the target machine exist in the database
     if query_strings and "id" in query_strings:
-        updateDatabaseRowByID(Vending_machine, query_strings)
+        updateDatabaseRowByID(vendingMachine, query_strings)
     return redirect(url_for("vending_machine.view_vending_machine"))
 
 
@@ -53,6 +53,6 @@ def delete_vending_machine():
     for obj in stock_obj_list:
         updateWarehouseQuantity(obj.product_id, obj.quantity, 0)
         deleteObjFromDB(obj)
-    unwanted_vending_machine = selectObj(Vending_machine, {"id": query_strings["id"]})
+    unwanted_vending_machine = selectObj(vendingMachine, {"id": query_strings["id"]})
     deleteObjFromDB(unwanted_vending_machine)
     return redirect(url_for("vending_machine.view_vending_machine"))

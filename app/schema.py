@@ -13,7 +13,7 @@ Base.metadata.create_all(Engine)
 
 
 # vending machines table
-class Vending_machine(Base):
+class vendingMachine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
     machine_name = Column(String(100))
