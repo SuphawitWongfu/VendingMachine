@@ -1,4 +1,5 @@
 from app.database.schema import *
+from app.database.engine import Session
 
 '''
 this file contains utilities functions for CRUD operation in the database
