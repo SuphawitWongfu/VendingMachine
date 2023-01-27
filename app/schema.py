@@ -1,5 +1,3 @@
-import enum
-
 from sqlalchemy import Column, Enum, Numeric, String, Integer, ForeignKey, DateTime, Boolean, Float, Text, MetaData, \
     Table
 from app.engine import Engine, Session, Base

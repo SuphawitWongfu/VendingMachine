@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "vendingmachine"
+version = "0.1.0"
+description = "vending machines tracker"
+authors = ["Suphawit <suphawit.won@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.2.2"
+sqlalchemy = "^1.4.46"
+pymysql = "^1.0.2"
+pytest = "^7.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
