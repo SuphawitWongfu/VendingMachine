@@ -17,12 +17,12 @@ return true if all criteria are passed else return false
 
 
 def add_validate(query_strings):
-    queryStringsAreValid = areAllQueryStringPresent(query_strings,
+    query_strings_are_valid = areAllQueryStringPresent(query_strings,
                                                     ("product_name", "product_code", "product_quantity",
                                                      "price_per_unit"))
-    quantityNotNegative = int(query_strings["product_quantity"]) >= 0
-    priceNotNegative = int(query_strings["price_per_unit"]) >= 0
-    return queryStringsAreValid and quantityNotNegative and priceNotNegative
+    quantity_not_negative = int(query_strings["product_quantity"]) >= 0
+    price_not_negative = int(query_strings["price_per_unit"]) >= 0
+    return query_strings_are_valid and quantity_not_negative and price_not_negative
 
 
 # add new products to the table
