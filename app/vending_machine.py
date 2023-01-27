@@ -9,7 +9,6 @@ all endpoints are redirected back to /vendings/ which return JSON object of the 
 vending_machine = Blueprint('vending_machine', __name__)
 
 
-# add new machine to vending machine table
 @vending_machine.route("/add_vendings/", methods=["GET", "POST"])
 def add_vending_machine():
     query_strings = request.args
@@ -22,7 +21,6 @@ def add_vending_machine():
     return redirect(url_for("vending_machine.view_vending_machine"))
 
 
-# view all vending machines in the table
 @vending_machine.route("/vendings/", methods=["GET"])
 def view_vending_machine():
     queries = get_all_from_table(vendingMachine)
@@ -32,7 +30,6 @@ def view_vending_machine():
     return jsonify(vending_machines)
 
 
-# edit an instance of vending machine
 @vending_machine.route("/edit_vendings/", methods=["GET", "POST"])
 def edit_vending_machine():
     query_strings = request.args
@@ -42,7 +39,6 @@ def edit_vending_machine():
     return redirect(url_for("vending_machine.view_vending_machine"))
 
 
-# delete a vending machine from the table
 @vending_machine.route('/delete_vendings/', methods=["GET", "POST", "DELETE"])
 def delete_vending_machine():
     query_strings = request.args

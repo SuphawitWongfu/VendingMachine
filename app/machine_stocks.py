@@ -18,7 +18,7 @@ def add_validate(query_strings):
     query_strings_are_valid = are_all_query_string_present(query_strings, ("machine_id", "product_id", "quantity"))
     # one machine cannot have the same entry of the same type of product
     no_duplicate_product_in_the_same_machine = not is_exist(MachineStock, {"product_id": query_strings["product_id"],
-                                                                  "machine_id": query_strings["machine_id"]})
+                                                                           "machine_id": query_strings["machine_id"]})
     product_exists = is_exist(Products, {"id": query_strings["product_id"]})
     machine_exists = is_exist(vendingMachine, {"id": query_strings["machine_id"]})
     quantity_not_negative = int(query_strings["quantity"]) >= 0
@@ -30,8 +30,6 @@ def add_validate(query_strings):
         quantity_not_negative and product_is_enough
 
 
-
-# add a MachineStock object to the database
 @machine_stocks.route("/add_machine_stocks/", methods=["GET", "POST"])
 def add_machine_stocks():
     query_strings = request.args
@@ -47,7 +45,6 @@ def add_machine_stocks():
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
 
-# display all data in the machine_stock table
 @machine_stocks.route("/machine_stocks/", methods=["GET"])
 def view_machine_stocks():
     queries = get_all_from_table(MachineStock)
@@ -58,7 +55,6 @@ def view_machine_stocks():
     return jsonify(stock_list)
 
 
-# edit a row of machine_stock table according to the query_strings
 @machine_stocks.route("/edit_machine_stocks/", methods=["GET", "POST"])
 def edit_machine_stock():
     query_strings = request.args
@@ -74,7 +70,6 @@ def edit_machine_stock():
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
 
-# delete a row from the database using id as search keys
 @machine_stocks.route("/delete_machine_stocks/", methods=["GET", "POST", "DELETE"])
 def delete_machine_stock():
     query_strings = request.args

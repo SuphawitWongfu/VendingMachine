@@ -19,12 +19,6 @@ def dict_helper(objlist):
     return result
 
 
-'''
-this function add an object to the database
-obj - an object which we wish to add to the database
-'''
-
-
 def add_obj_to_db(obj):
     if obj is not None:
         session = Session()
@@ -34,14 +28,6 @@ def add_obj_to_db(obj):
             session.close()
         except:
             session.close()
-
-
-'''
-this function select a row in the database and return it as object
-table_name - the table we wish to query
-search_params - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-return a row object which was queried from the database if success, else return None
-'''
 
 
 def select_obj(table_name, search_params):
@@ -55,14 +41,6 @@ def select_obj(table_name, search_params):
     return obj
 
 
-'''
-this function query a list of rows from the database and return a list of row objects
-table_name - the table we wish to query
-search_params - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-return a list of row objects which were queried from the database if success, else return None
-'''
-
-
 def select_obj_list(table_name, search_params):
     session = Session()
     obj_list = None
@@ -72,12 +50,6 @@ def select_obj_list(table_name, search_params):
     except:
         session.close()
     return obj_list
-
-
-'''
-this function delete a row from the database based on row obj taking in as the input
-obj - a row object which we wish to delete from the database
-'''
 
 
 def delete_obj_from_db(obj):
@@ -91,12 +63,6 @@ def delete_obj_from_db(obj):
             session.close()
 
 
-'''
-this function query all rows from a specify table
-table_class - the table we wish to query
-'''
-
-
 def get_all_from_table(table_class):
     session = Session()
     queries = None
@@ -108,24 +74,10 @@ def get_all_from_table(table_class):
     return queries
 
 
-'''
-this function is used to check if all the query strings we need are passed into the url or not
-query_strings - the query strings arguments which are passed in the url
-target_sets - a set of strings represent all the query strings we want
-return true if all the query strings in the target_sets are present in the query_strings
-'''
 
 
 def are_all_query_string_present(query_strings, target_sets):
     return all(query_string in query_strings for query_string in target_sets)
-
-
-'''
-this function check if a row is exist in the database or not
-table_name - the name of the table we wish to check
-search_params - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-return true if the row we are trying to check exist in the database and false if not
-'''
 
 
 def is_exist(table_name, search_params):
@@ -163,13 +115,6 @@ def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
     except:
         session.close()
     return quantity_validation
-
-
-'''
-this function update a row in the database according to the column name specify in query_strings dictionary
-table_class - the table we wish to update
-query_strings - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-'''
 
 
 def update_database_row_by_id(table_class, query_strings):

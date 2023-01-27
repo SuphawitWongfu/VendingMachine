@@ -10,7 +10,6 @@ This file contain all tables of the database
 Base.metadata.create_all(Engine)
 
 
-# vending machines table
 class vendingMachine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
@@ -33,7 +32,6 @@ class vendingMachine(Base):
         return query_dict
 
 
-# products table
 class Products(Base):
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
@@ -59,7 +57,6 @@ class Products(Base):
         return query_dict
 
 
-# stocks in machine table
 class MachineStock(Base):
     __tablename__ = "machine_stocks"
     id = Column(Integer, primary_key=True)

@@ -25,7 +25,6 @@ def add_validate(query_strings):
     return query_strings_are_valid and quantity_not_negative and price_not_negative
 
 
-# add new products to the table
 @products.route("/add_products/", methods=["GET", "POST"])
 def add_products():
     #  making sure that all query string needed are presented
@@ -41,7 +40,6 @@ def add_products():
     return redirect(url_for("products.view_products"))
 
 
-# view all products in the table
 @products.route("/products/", methods=["GET"])
 def view_products():
     queries = get_all_from_table(Products)
@@ -51,7 +49,6 @@ def view_products():
     return jsonify(prods)
 
 
-# edit products in the table according to query strings given
 @products.route("/edit_products/", methods=["GET", "POST"])
 def edit_vending_machine():
     query_strings = request.args
@@ -61,7 +58,6 @@ def edit_vending_machine():
     return redirect(url_for("products.view_products"))
 
 
-# delete a product specify by id
 @products.route('/delete_products/', methods=["GET", "POST", "DELETE"])
 def delete_vending_machine():
     query_strings = request.args
