@@ -1,11 +1,12 @@
-from app.schema import *
+from app.database.schema import *
+from app.database.engine import Session
 
 '''
 this file contains utilities functions for CRUD operation in the database
 '''
 
-noContent204 = '', 204
-badRequest400 = '', 400
+no_content_204 = '', 204
+bad_request_400 = '', 400
 
 '''
 this function create a list of dictionaries from a list of objects, queried from the database
@@ -19,13 +20,7 @@ def dict_helper(objlist):
     return result
 
 
-'''
-this function add an object to the database
-obj - an object which we wish to add to the database
-'''
-
-
-def addObjToDB(obj):
+def add_obj_to_db(obj):
     if obj is not None:
         session = Session()
         try:
@@ -36,15 +31,7 @@ def addObjToDB(obj):
             session.close()
 
 
-'''
-this function select a row in the database and return it as object
-table_name - the table we wish to query
-search_params - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-return a row object which was queried from the database if success, else return None
-'''
-
-
-def selectObj(table_name, search_params):
+def select_obj(table_name, search_params):
     session = Session()
     obj = None
     try:
@@ -55,15 +42,7 @@ def selectObj(table_name, search_params):
     return obj
 
 
-'''
-this function query a list of rows from the database and return a list of row objects
-table_name - the table we wish to query
-search_params - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-return a list of row objects which were queried from the database if success, else return None
-'''
-
-
-def selectObjList(table_name, search_params):
+def select_obj_list(table_name, search_params):
     session = Session()
     obj_list = None
     try:
@@ -74,13 +53,7 @@ def selectObjList(table_name, search_params):
     return obj_list
 
 
-'''
-this function delete a row from the database based on row obj taking in as the input
-obj - a row object which we wish to delete from the database
-'''
-
-
-def deleteObjFromDB(obj):
+def delete_obj_from_db(obj):
     if obj is not None:
         session = Session()
         try:
@@ -91,13 +64,7 @@ def deleteObjFromDB(obj):
             session.close()
 
 
-'''
-this function query all rows from a specify table
-table_class - the table we wish to query
-'''
-
-
-def getAllFromTable(table_class):
+def get_all_from_table(table_class):
     session = Session()
     queries = None
     try:
@@ -108,27 +75,11 @@ def getAllFromTable(table_class):
     return queries
 
 
-'''
-this function is used to check if all the query strings we need are passed into the url or not
-query_strings - the query strings arguments which are passed in the url
-target_sets - a set of strings represent all the query strings we want
-return true if all the query strings in the target_sets are present in the query_strings
-'''
-
-
-def areAllQueryStringPresent(query_strings, target_sets):
+def are_all_query_string_present(query_strings, target_sets):
     return all(query_string in query_strings for query_string in target_sets)
 
 
-'''
-this function check if a row is exist in the database or not
-table_name - the name of the table we wish to check
-search_params - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-return true if the row we are trying to check exist in the database and false if not
-'''
-
-
-def isExist(table_name, search_params):
+def is_exist(table_name, search_params):
     session = Session()
     result = False
     try:
@@ -149,7 +100,7 @@ return quantity_validation which tells if the update is success or not if succes
 '''
 
 
-def updateWarehouseQuantity(product_id, quantity_in_machine, new_quantity):
+def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
     session = Session()
     quantity_validation = None
     try:
@@ -165,14 +116,7 @@ def updateWarehouseQuantity(product_id, quantity_in_machine, new_quantity):
     return quantity_validation
 
 
-'''
-this function update a row in the database according to the column name specify in query_strings dictionary
-table_class - the table we wish to update
-query_strings - a dictionary which structure as {search_key: value_to_search} use to specify search keys while querying
-'''
-
-
-def updateDatabaseRowByID(table_class, query_strings):
+def update_database_row_by_id(table_class, query_strings):
     session = Session()
     current_item = session.query(table_class).filter_by(id=query_strings["id"]).first()
     if current_item is None:
@@ -181,6 +125,6 @@ def updateDatabaseRowByID(table_class, query_strings):
         setattr(current_item, query_string, query_strings[query_string])
         # case for updating machine_stocks table
         # if type(current_item) is MachineStock and query_string == "quantity":
-        # updateWarehouseQuantity(current_item.machine_id, current_item.product_id, query_strings["quantity"])
+        # update_warehouse_quantity(current_item.machine_id, current_item.product_id, query_strings["quantity"])
     session.commit()
     session.close()

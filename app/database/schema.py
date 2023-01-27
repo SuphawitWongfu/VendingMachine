@@ -1,9 +1,8 @@
-import enum
-
-from sqlalchemy import Column, Enum, Numeric, String, Integer, ForeignKey, DateTime, Boolean, Float, Text, MetaData, \
-    Table
-from app.engine import Engine, Session, Base
 import datetime as dt
+
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float
+
+from app.database.engine import Engine, Base
 
 """
 This file contain all tables of the database
@@ -12,8 +11,7 @@ This file contain all tables of the database
 Base.metadata.create_all(Engine)
 
 
-# vending machines table
-class Vending_machine(Base):
+class vendingMachine(Base):
     __tablename__ = 'vending_machines'
     id = Column(Integer, primary_key=True)
     machine_name = Column(String(100))
@@ -35,7 +33,6 @@ class Vending_machine(Base):
         return query_dict
 
 
-# products table
 class Products(Base):
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
@@ -61,7 +58,6 @@ class Products(Base):
         return query_dict
 
 
-# stocks in machine table
 class MachineStock(Base):
     __tablename__ = "machine_stocks"
     id = Column(Integer, primary_key=True)

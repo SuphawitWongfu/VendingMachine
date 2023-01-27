@@ -13,5 +13,4 @@ db_host = os.environ.get("mysql_host")
 db_port = os.environ.get("mysql_port")
 mysql_db = os.environ.get("vending_db")
 
-
 mysql_uri = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{mysql_db}"

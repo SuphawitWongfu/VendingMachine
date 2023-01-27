@@ -1,2 +1,4 @@
 /.idea/
 credentials.py
+__pycache__/
+poetry.toml
