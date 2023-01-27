@@ -25,7 +25,7 @@ obj - an object which we wish to add to the database
 '''
 
 
-def addObjToDB(obj):
+def add_obj_to_db(obj):
     if obj is not None:
         session = Session()
         try:
@@ -44,7 +44,7 @@ return a row object which was queried from the database if success, else return 
 '''
 
 
-def selectObj(table_name, search_params):
+def select_obj(table_name, search_params):
     session = Session()
     obj = None
     try:
@@ -63,7 +63,7 @@ return a list of row objects which were queried from the database if success, el
 '''
 
 
-def selectObjList(table_name, search_params):
+def select_obj_list(table_name, search_params):
     session = Session()
     obj_list = None
     try:
@@ -80,7 +80,7 @@ obj - a row object which we wish to delete from the database
 '''
 
 
-def deleteObjFromDB(obj):
+def delete_obj_from_db(obj):
     if obj is not None:
         session = Session()
         try:
@@ -97,7 +97,7 @@ table_class - the table we wish to query
 '''
 
 
-def getAllFromTable(table_class):
+def get_all_from_table(table_class):
     session = Session()
     queries = None
     try:
@@ -116,7 +116,7 @@ return true if all the query strings in the target_sets are present in the query
 '''
 
 
-def areAllQueryStringPresent(query_strings, target_sets):
+def are_all_query_string_present(query_strings, target_sets):
     return all(query_string in query_strings for query_string in target_sets)
 
 
@@ -128,7 +128,7 @@ return true if the row we are trying to check exist in the database and false if
 '''
 
 
-def isExist(table_name, search_params):
+def is_exist(table_name, search_params):
     session = Session()
     result = False
     try:
@@ -149,7 +149,7 @@ return quantity_validation which tells if the update is success or not if succes
 '''
 
 
-def updateWarehouseQuantity(product_id, quantity_in_machine, new_quantity):
+def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
     session = Session()
     quantity_validation = None
     try:
@@ -172,7 +172,7 @@ query_strings - a dictionary which structure as {search_key: value_to_search} us
 '''
 
 
-def updateDatabaseRowByID(table_class, query_strings):
+def update_database_row_by_id(table_class, query_strings):
     session = Session()
     current_item = session.query(table_class).filter_by(id=query_strings["id"]).first()
     if current_item is None:
@@ -181,6 +181,6 @@ def updateDatabaseRowByID(table_class, query_strings):
         setattr(current_item, query_string, query_strings[query_string])
         # case for updating machine_stocks table
         # if type(current_item) is MachineStock and query_string == "quantity":
-        # updateWarehouseQuantity(current_item.machine_id, current_item.product_id, query_strings["quantity"])
+        # update_warehouse_quantity(current_item.machine_id, current_item.product_id, query_strings["quantity"])
     session.commit()
     session.close()

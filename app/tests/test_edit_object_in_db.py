@@ -1,4 +1,4 @@
-from app.queryUtils import updateDatabaseRowByID
+from app.queryUtils import update_database_row_by_id
 from app.engine import Session
 from app.schema import *
 
@@ -24,7 +24,7 @@ def test_edit_vending_machine() :
     mock_query_strings = {"id": to_be_edited_vending_machine.id,
                           "machine_name": "after_edit_name",
                           "machine_location": "after_edit_location"}
-    updateDatabaseRowByID(vendingMachine, mock_query_strings)
+    update_database_row_by_id(vendingMachine, mock_query_strings)
     session = Session()
     after_edit_vending_machine = session.query(vendingMachine).filter_by(id=mock_query_strings["id"]).first()
     session.close()
@@ -42,7 +42,7 @@ def test_edit_product() :
                           "product_code": 11,
                           "product_quantity": 6,
                           "price_per_unit": 9}
-    updateDatabaseRowByID(Products,mock_query_strings)
+    update_database_row_by_id(Products, mock_query_strings)
     session = Session()
     after_edit_product = session.query(Products).filter_by(id=mock_query_strings["id"]).first()
     session.close()
@@ -67,7 +67,7 @@ def test_edit_stock() :
     stock_for_edit = setup_object_for_edit(MachineStock, new_stock)
     mock_query_strings = {"id": stock_for_edit.id,
                           "quantity": 0}
-    updateDatabaseRowByID(MachineStock, mock_query_strings)
+    update_database_row_by_id(MachineStock, mock_query_strings)
     session = Session()
     after_edit_stock = session.query(MachineStock).filter_by(id=mock_query_strings["id"]).first()
     session.close()
