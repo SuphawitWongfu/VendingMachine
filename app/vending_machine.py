@@ -16,7 +16,7 @@ def add_vending_machine():
     # making sure that all query string needed are presented
     addable = areAllQueryStringPresent(query_strings, ("machine_name", "machine_location"))
     if not addable:
-        return badRequest400
+        return bad_request_400
     new_vend = vendingMachine(query_strings["machine_name"], query_strings["machine_location"])
     addObjToDB(new_vend)
     return redirect(url_for("vending_machine.view_vending_machine"))
@@ -27,7 +27,7 @@ def add_vending_machine():
 def view_vending_machine():
     queries = getAllFromTable(vendingMachine)
     if not queries:
-        return noContent204  # return 204 NO CONTENT if the table is empty
+        return no_content_204  # return 204 NO CONTENT if the table is empty
     vending_machines = dict_helper(queries)
     return jsonify(vending_machines)
 
@@ -48,7 +48,7 @@ def delete_vending_machine():
     query_strings = request.args
     provided_id = areAllQueryStringPresent(query_strings, ("id",))
     if not provided_id:
-        return badRequest400
+        return bad_request_400
     stock_obj_list = selectObjList(MachineStock, {"machine_id": query_strings["id"]})
     for obj in stock_obj_list:
         updateWarehouseQuantity(obj.product_id, obj.quantity, 0)

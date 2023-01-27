@@ -33,7 +33,7 @@ def add_products():
     # making sure that all query string needed are presented
     addable = add_validate(query_strings)
     if not addable:
-        return badRequest400
+        return bad_request_400
     # noinspection PyTypeChecker
     new_vend = Products(query_strings["product_name"], query_strings["product_code"],
                         query_strings["product_quantity"], query_strings["price_per_unit"])
@@ -46,7 +46,7 @@ def add_products():
 def view_products():
     queries = getAllFromTable(Products)
     if not queries:
-        return noContent204  # return 204 NO CONTENT if the table is empty
+        return no_content_204  # return 204 NO CONTENT if the table is empty
     prods = dict_helper(queries)
     return jsonify(prods)
 
@@ -67,7 +67,7 @@ def delete_vending_machine():
     query_strings = request.args
     provided_id = areAllQueryStringPresent(query_strings, ("id",))
     if not provided_id:
-        return badRequest400
+        return bad_request_400
     stock_obj_list = selectObjList(MachineStock, {"product_id": query_strings["id"]})
     for obj in stock_obj_list:
         deleteObjFromDB(obj)

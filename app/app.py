@@ -24,7 +24,7 @@ app.config['SECRET_KEY'] = 'thisisasecret'
 
 @app.route("/", methods=["GET"])
 def index():
-    return "Venting Machine"
+    return "Vending Machine"
 
 
 # setup app config

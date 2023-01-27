@@ -15,19 +15,20 @@ return true if all criteria are passed else return false
 
 
 def add_validate(query_strings):
-    QueryStringsAreValid = areAllQueryStringPresent(query_strings, ("machine_id", "product_id", "quantity"))
+    query_strings_are_valid = areAllQueryStringPresent(query_strings, ("machine_id", "product_id", "quantity"))
     # one machine cannot have the same entry of the same type of product
-    noDuplicatesProductInSameMachine = not isExist(MachineStock, {"product_id": query_strings["product_id"],
+    no_duplicate_product_in_the_same_machine = not isExist(MachineStock, {"product_id": query_strings["product_id"],
                                                                   "machine_id": query_strings["machine_id"]})
-    productExist = isExist(Products, {"id": query_strings["product_id"]})
-    machineExist = isExist(vendingMachine, {"id": query_strings["machine_id"]})
-    quantityNotNegative = int(query_strings["quantity"]) >= 0
-    productEnough = False
-    if productExist:
+    product_exists = isExist(Products, {"id": query_strings["product_id"]})
+    machine_exists = isExist(vendingMachine, {"id": query_strings["machine_id"]})
+    quantity_not_negative = int(query_strings["quantity"]) >= 0
+    product_is_enough = False
+    if product_exists:
         product = selectObj(Products, {"id": query_strings["product_id"]})
-        productEnough = int(product.product_quantity) >= int(query_strings["quantity"])
-    return QueryStringsAreValid and noDuplicatesProductInSameMachine and productExist and machineExist and \
-        quantityNotNegative and productEnough
+        product_is_enough = int(product.product_quantity) >= int(query_strings["quantity"])
+    return query_strings_are_valid and no_duplicate_product_in_the_same_machine and product_exists and machine_exists and \
+        quantity_not_negative and product_is_enough
+
 
 
 # add a MachineStock object to the database
@@ -37,7 +38,7 @@ def add_machine_stocks():
     addable = add_validate(query_strings)
 
     if not addable:
-        return badRequest400
+        return bad_request_400
     new_machine_stock = MachineStock(int(query_strings["machine_id"]), int(query_strings["product_id"]),
                                      int(query_strings["quantity"]))
     addObjToDB(new_machine_stock)
@@ -50,9 +51,9 @@ def add_machine_stocks():
 @machine_stocks.route("/machine_stocks/", methods=["GET"])
 def view_machine_stocks():
     queries = getAllFromTable(MachineStock)
-    noData = not queries
-    if noData:
-        return noContent204  # return 204 NO CONTENT if the table is empty
+    no_data = not queries
+    if no_data:
+        return no_content_204  # return 204 NO CONTENT if the table is empty
     stock_list = dict_helper(queries)
     return jsonify(stock_list)
 
@@ -79,7 +80,7 @@ def delete_machine_stock():
     query_strings = request.args
     provided_id = areAllQueryStringPresent(query_strings, ("id",))
     if not provided_id:
-        return badRequest400
+        return bad_request_400
     if isExist(MachineStock, {"id": query_strings["id"]}):
         unwanted_product = selectObj(MachineStock, {"id": query_strings["id"]})
         updateWarehouseQuantity(unwanted_product.product_id, unwanted_product.quantity, 0)
@@ -113,7 +114,7 @@ def create_listing(machine_id):
         stock_dict["products"] = product_listing
     except:
         session.close()
-        return noContent204
+        return no_content_204
     return stock_dict
 
 
@@ -124,4 +125,4 @@ def inspect_stock():
     if query_strings and "machine_id" in query_strings:
         stock_dict = create_listing(query_strings["machine_id"])
         return jsonify(stock_dict)
-    return noContent204
+    return no_content_204

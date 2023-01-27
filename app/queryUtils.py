@@ -4,8 +4,8 @@ from app.schema import *
 this file contains utilities functions for CRUD operation in the database
 '''
 
-noContent204 = '', 204
-badRequest400 = '', 400
+no_content_204 = '', 204
+bad_request_400 = '', 400
 
 '''
 this function create a list of dictionaries from a list of objects, queried from the database
