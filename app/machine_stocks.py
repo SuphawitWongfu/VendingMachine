@@ -13,21 +13,26 @@ query_strings - the query strings which are passed in as argument in the url
 return true if all criteria are passed else return false
 '''
 
-
-def add_validate(query_strings):
+def validate_product_and_machine(query_strings):
     query_strings_are_valid = are_all_query_string_present(query_strings, ("machine_id", "product_id", "quantity"))
-    # one machine cannot have the same entry of the same type of product
     no_duplicate_product_in_the_same_machine = not is_exist(MachineStock, {"product_id": query_strings["product_id"],
                                                                            "machine_id": query_strings["machine_id"]})
     product_exists = is_exist(Products, {"id": query_strings["product_id"]})
     machine_exists = is_exist(vendingMachine, {"id": query_strings["machine_id"]})
+    return product_exists and machine_exists and no_duplicate_product_in_the_same_machine and query_strings_are_valid
+
+def validate_product_quantity(query_strings, product_available):
     quantity_not_negative = int(query_strings["quantity"]) >= 0
     product_is_enough = False
-    if product_exists:
+    if product_available:
         product = select_obj(Products, {"id": query_strings["product_id"]})
         product_is_enough = int(product.product_quantity) >= int(query_strings["quantity"])
-    return query_strings_are_valid and no_duplicate_product_in_the_same_machine and product_exists and machine_exists and \
-        quantity_not_negative and product_is_enough
+    return product_is_enough and quantity_not_negative
+
+def add_validate(query_strings):
+    product_and_machine_available = validate_product_and_machine(query_strings)
+    product_quantity_is_valid = validate_product_quantity(query_strings,product_and_machine_available)
+    return product_and_machine_available and product_quantity_is_valid
 
 
 @machine_stocks.route("/add_machine_stocks/", methods=["GET", "POST"])
