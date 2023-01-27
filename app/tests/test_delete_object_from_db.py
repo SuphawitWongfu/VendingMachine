@@ -1,4 +1,4 @@
-from app.queryUtils import *
+from app.database.queryUtils import *
 
 def setup_db_for_delete(table_name, row_object) :
     session = Session()

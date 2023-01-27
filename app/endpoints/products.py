@@ -1,6 +1,6 @@
-from app.schema import *
-from app.queryUtils import *
-from flask import Blueprint, request, jsonify, redirect, url_for, flash
+from flask import Blueprint, request, jsonify, redirect, url_for
+
+from app.database.queryUtils import *
 
 """
 This file contains CRUD operation regarding products table
@@ -19,7 +19,7 @@ return true if all criteria are passed else return false
 def add_validate(query_strings):
     query_strings_are_valid = are_all_query_string_present(query_strings,
                                                            ("product_name", "product_code", "product_quantity",
-                                                     "price_per_unit"))
+                                                            "price_per_unit"))
     quantity_not_negative = int(query_strings["product_quantity"]) >= 0
     price_not_negative = int(query_strings["price_per_unit"]) >= 0
     return query_strings_are_valid and quantity_not_negative and price_not_negative

@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from app.db import *
+
+from app.database.db import *
 
 """
 This file contains the logic of creating sqlalchemy database engine

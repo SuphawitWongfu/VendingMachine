@@ -1,4 +1,4 @@
-from app.schema import *
+from app.database.schema import *
 
 '''
 this file contains utilities functions for CRUD operation in the database
@@ -72,8 +72,6 @@ def get_all_from_table(table_class):
     except:
         session.close()
     return queries
-
-
 
 
 def are_all_query_string_present(query_strings, target_sets):

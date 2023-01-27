@@ -1,6 +1,6 @@
-from app.queryUtils import update_database_row_by_id
-from app.engine import Session
-from app.schema import *
+from app.database.queryUtils import update_database_row_by_id
+from app.database.engine import Session
+from app.database.schema import *
 
 def setup_object_for_edit(table_name, row_object) :
     session = Session()

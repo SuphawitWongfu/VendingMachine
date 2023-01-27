@@ -1,5 +1,6 @@
-from app.queryUtils import *
-from flask import Blueprint, request, jsonify, redirect, url_for, flash
+from flask import Blueprint, request, jsonify, redirect, url_for
+
+from app.database.queryUtils import *
 
 """
 This file contains CRUD operation regarding vending_machine table

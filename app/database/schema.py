@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Enum, Numeric, String, Integer, ForeignKey, DateTime, Boolean, Float, Text, MetaData, \
-    Table
-from app.engine import Engine, Session, Base
 import datetime as dt
+
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float
+
+from app.database.engine import Engine, Base
 
 """
 This file contain all tables of the database

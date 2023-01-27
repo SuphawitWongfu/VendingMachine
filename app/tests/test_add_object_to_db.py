@@ -1,4 +1,4 @@
-from app.queryUtils import *
+from app.database.queryUtils import *
 
 def test_add_vending_machine() :
     session = Session()
