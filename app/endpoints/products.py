@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect, url_for
+from flask import Blueprint, jsonify, redirect, request, url_for
 
 from app.database.queryUtils import *
 
@@ -7,19 +7,20 @@ This file contains CRUD operation regarding products table
 all endpoints are redirected back to /products/ which return JSON object of the data in the products table
 """
 
-products = Blueprint('products', __name__)
+products = Blueprint("products", __name__)
 
-'''
+"""
 this function are for validating if the query strings argument are valid or not
 query_strings - the query strings which are passed in as argument in the url
 return true if all criteria are passed else return false
-'''
+"""
 
 
 def add_validate(query_strings):
-    query_strings_are_valid = are_all_query_string_present(query_strings,
-                                                           ("product_name", "product_code", "product_quantity",
-                                                            "price_per_unit"))
+    query_strings_are_valid = are_all_query_string_present(
+        query_strings,
+        ("product_name", "product_code", "product_quantity", "price_per_unit"),
+    )
     quantity_not_negative = int(query_strings["product_quantity"]) >= 0
     price_not_negative = int(query_strings["price_per_unit"]) >= 0
     return query_strings_are_valid and quantity_not_negative and price_not_negative
@@ -34,8 +35,12 @@ def add_products():
     if not addable:
         return bad_request_400
     # noinspection PyTypeChecker
-    new_vend = Products(query_strings["product_name"], query_strings["product_code"],
-                        query_strings["product_quantity"], query_strings["price_per_unit"])
+    new_vend = Products(
+        query_strings["product_name"],
+        query_strings["product_code"],
+        query_strings["product_quantity"],
+        query_strings["price_per_unit"],
+    )
     add_obj_to_db(new_vend)
     return redirect(url_for("products.view_products"))
 
@@ -58,7 +63,7 @@ def edit_vending_machine():
     return redirect(url_for("products.view_products"))
 
 
-@products.route('/delete_products/', methods=["GET", "POST", "DELETE"])
+@products.route("/delete_products/", methods=["GET", "POST", "DELETE"])
 def delete_vending_machine():
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))

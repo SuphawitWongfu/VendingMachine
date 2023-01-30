@@ -1,6 +1,7 @@
 from app.database.queryUtils import *
 
-def test_add_vending_machine() :
+
+def test_add_vending_machine():
     session = Session()
     new_vending_machine = vendingMachine("test", "test")
     before_add_vending_machine_list = session.query(vendingMachine).all()
@@ -11,9 +12,12 @@ def test_add_vending_machine() :
     session.query(vendingMachine).delete()
     session.commit()
     session.close()
-    assert len(after_add_vending_machine_list) - len(before_add_vending_machine_list) == 1
+    assert (
+        len(after_add_vending_machine_list) - len(before_add_vending_machine_list) == 1
+    )
 
-def test_add_products() :
+
+def test_add_products():
     session = Session()
     new_product = Products("test_product_name", 1, 10, 10)
     before_add_product_list = session.query(Products).all()
@@ -26,7 +30,8 @@ def test_add_products() :
     session.close()
     assert len(after_add_product_list) - len(before_add_product_list) == 1
 
-def test_add_duplicate_products() :
+
+def test_add_duplicate_products():
     new_product = Products("test_product_name", 1, 10, 10)
     add_obj_to_db(new_product)
     session = Session()
@@ -38,9 +43,12 @@ def test_add_duplicate_products() :
     session.query(Products).delete()
     session.commit()
     session.close()
-    assert len(after_add_duplicate_product_list) == len(before_add_duplicate_product_list)
+    assert len(after_add_duplicate_product_list) == len(
+        before_add_duplicate_product_list
+    )
 
-def test_add_stock() :
+
+def test_add_stock():
     new_product = Products("test_product_name", 1, 10, 10)
     new_vending_machine = vendingMachine("test", "test")
     add_obj_to_db(new_product)
@@ -62,8 +70,3 @@ def test_add_stock() :
     session.commit()
     session.close()
     assert len(after_add_stock_list) - len(before_add_stock_list) == 1
-
-
-
-
-

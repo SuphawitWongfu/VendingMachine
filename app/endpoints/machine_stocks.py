@@ -1,27 +1,39 @@
-from flask import Blueprint, request, jsonify, redirect, url_for
+from flask import Blueprint, jsonify, redirect, request, url_for
 
 from app.database.queryUtils import *
 
-'''
+"""
 this file contains all function regarding CRUD operation for machine_stock table
-'''
+"""
 
 machine_stocks = Blueprint("machine_stocks", __name__)
 
-'''
+"""
 this function are for validating if the query strings argument are valid or not
 query_strings - the query strings which are passed in as argument in the url
 return true if all criteria are passed else return false
-'''
+"""
 
 
 def validate_product_and_machine(query_strings):
-    query_strings_are_valid = are_all_query_string_present(query_strings, ("machine_id", "product_id", "quantity"))
-    no_duplicate_product_in_the_same_machine = not is_exist(MachineStock, {"product_id": query_strings["product_id"],
-                                                                           "machine_id": query_strings["machine_id"]})
+    query_strings_are_valid = are_all_query_string_present(
+        query_strings, ("machine_id", "product_id", "quantity")
+    )
+    no_duplicate_product_in_the_same_machine = not is_exist(
+        MachineStock,
+        {
+            "product_id": query_strings["product_id"],
+            "machine_id": query_strings["machine_id"],
+        },
+    )
     product_exists = is_exist(Products, {"id": query_strings["product_id"]})
     machine_exists = is_exist(vendingMachine, {"id": query_strings["machine_id"]})
-    return product_exists and machine_exists and no_duplicate_product_in_the_same_machine and query_strings_are_valid
+    return (
+        product_exists
+        and machine_exists
+        and no_duplicate_product_in_the_same_machine
+        and query_strings_are_valid
+    )
 
 
 def validate_product_quantity(query_strings, product_available):
@@ -29,13 +41,17 @@ def validate_product_quantity(query_strings, product_available):
     product_is_enough = False
     if product_available:
         product = select_obj(Products, {"id": query_strings["product_id"]})
-        product_is_enough = int(product.product_quantity) >= int(query_strings["quantity"])
+        product_is_enough = int(product.product_quantity) >= int(
+            query_strings["quantity"]
+        )
     return product_is_enough and quantity_not_negative
 
 
 def add_validate(query_strings):
     product_and_machine_available = validate_product_and_machine(query_strings)
-    product_quantity_is_valid = validate_product_quantity(query_strings, product_and_machine_available)
+    product_quantity_is_valid = validate_product_quantity(
+        query_strings, product_and_machine_available
+    )
     return product_and_machine_available and product_quantity_is_valid
 
 
@@ -46,8 +62,11 @@ def add_machine_stocks():
 
     if not addable:
         return bad_request_400
-    new_machine_stock = MachineStock(int(query_strings["machine_id"]), int(query_strings["product_id"]),
-                                     int(query_strings["quantity"]))
+    new_machine_stock = MachineStock(
+        int(query_strings["machine_id"]),
+        int(query_strings["product_id"]),
+        int(query_strings["quantity"]),
+    )
     add_obj_to_db(new_machine_stock)
     update_warehouse_quantity(query_strings["product_id"], 0, query_strings["quantity"])
 
@@ -68,11 +87,16 @@ def view_machine_stocks():
 def edit_machine_stock():
     query_strings = request.args
     # check if the target product exist in the database
-    if query_strings and "id" in query_strings and is_exist(MachineStock, {"id": query_strings["id"]}):
+    if (
+        query_strings
+        and "id" in query_strings
+        and is_exist(MachineStock, {"id": query_strings["id"]})
+    ):
         stock_obj = select_obj(MachineStock, {"id": query_strings["id"]})
         quantity_in_machine = stock_obj.quantity
-        quantity_validation = update_warehouse_quantity(stock_obj.product_id, quantity_in_machine,
-                                                        query_strings["quantity"])
+        quantity_validation = update_warehouse_quantity(
+            stock_obj.product_id, quantity_in_machine, query_strings["quantity"]
+        )
         if quantity_validation is not None:
             update_database_row_by_id(MachineStock, query_strings)
 
@@ -87,16 +111,18 @@ def delete_machine_stock():
         return bad_request_400
     if is_exist(MachineStock, {"id": query_strings["id"]}):
         unwanted_product = select_obj(MachineStock, {"id": query_strings["id"]})
-        update_warehouse_quantity(unwanted_product.product_id, unwanted_product.quantity, 0)
+        update_warehouse_quantity(
+            unwanted_product.product_id, unwanted_product.quantity, 0
+        )
         delete_obj_from_db(unwanted_product)
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
 
-'''
+"""
 this function create a dictionary of listings of items in a specify vending_machine
 machine_id - the id of the vending_machine we wish to see the listings
 return a dictionary of listings
-'''
+"""
 
 
 def create_listing(machine_id):
@@ -105,11 +131,16 @@ def create_listing(machine_id):
         # query vending machine for id and name
         stock_obj_list = select_obj_list(MachineStock, {"machine_id": machine_id})
         machine_obj = select_obj(vendingMachine, {"id": machine_id})
-        stock_dict = {"machine_id": machine_obj.id, "machine_name": machine_obj.machine_name}
+        stock_dict = {
+            "machine_id": machine_obj.id,
+            "machine_name": machine_obj.machine_name,
+        }
         product_listing = []
         # query products for product data
         for listing in stock_obj_list:
-            product_obj = session.query(Products).filter_by(id=listing.product_id).first()
+            product_obj = (
+                session.query(Products).filter_by(id=listing.product_id).first()
+            )
             product_dict = product_obj.obj_to_dict()
             # need to change this to quantity in the vending machine
             product_dict["product_quantity"] = listing.quantity

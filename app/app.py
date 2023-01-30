@@ -20,7 +20,7 @@ from app.endpoints.machine_stocks import machine_stocks
 
 app.register_blueprint(machine_stocks)
 
-app.config['SECRET_KEY'] = 'thisisasecret'
+app.config["SECRET_KEY"] = "thisisasecret"
 
 
 @app.route("/", methods=["GET"])
@@ -29,8 +29,8 @@ def index():
 
 
 # setup app config
-app.config['SQLALCHEMY_DATABASE_URI'] = mysql_uri
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = mysql_uri
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.app_context().push()
 

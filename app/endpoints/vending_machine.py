@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect, url_for
+from flask import Blueprint, jsonify, redirect, request, url_for
 
 from app.database.queryUtils import *
 
@@ -7,17 +7,21 @@ This file contains CRUD operation regarding vending_machine table
 all endpoints are redirected back to /vendings/ which return JSON object of the data in the vending_machines table
 """
 
-vending_machine = Blueprint('vending_machine', __name__)
+vending_machine = Blueprint("vending_machine", __name__)
 
 
 @vending_machine.route("/add_vendings/", methods=["GET", "POST"])
 def add_vending_machine():
     query_strings = request.args
     # making sure that all query string needed are presented
-    addable = are_all_query_string_present(query_strings, ("machine_name", "machine_location"))
+    addable = are_all_query_string_present(
+        query_strings, ("machine_name", "machine_location")
+    )
     if not addable:
         return bad_request_400
-    new_vend = vendingMachine(query_strings["machine_name"], query_strings["machine_location"])
+    new_vend = vendingMachine(
+        query_strings["machine_name"], query_strings["machine_location"]
+    )
     add_obj_to_db(new_vend)
     return redirect(url_for("vending_machine.view_vending_machine"))
 
@@ -40,7 +44,7 @@ def edit_vending_machine():
     return redirect(url_for("vending_machine.view_vending_machine"))
 
 
-@vending_machine.route('/delete_vendings/', methods=["GET", "POST", "DELETE"])
+@vending_machine.route("/delete_vendings/", methods=["GET", "POST", "DELETE"])
 def delete_vending_machine():
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))

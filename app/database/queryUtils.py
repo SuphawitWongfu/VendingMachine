@@ -1,18 +1,18 @@
-from app.database.schema import *
 from app.database.engine import Session
+from app.database.schema import *
 
-'''
+"""
 this file contains utilities functions for CRUD operation in the database
-'''
+"""
 
-no_content_204 = '', 204
-bad_request_400 = '', 400
+no_content_204 = "", 204
+bad_request_400 = "", 400
 
-'''
+"""
 this function create a list of dictionaries from a list of objects, queried from the database
 objlist - list of objects which was queried from the database
 return - a list of dictionaries in which each dictionary is create using obj_to_dict method
-'''
+"""
 
 
 def dict_helper(objlist):
@@ -83,21 +83,23 @@ def is_exist(table_name, search_params):
     session = Session()
     result = False
     try:
-        result = session.query(table_name).filter_by(**search_params).first() is not None
+        result = (
+            session.query(table_name).filter_by(**search_params).first() is not None
+        )
         session.close()
     except:
         session.close()
     return result
 
 
-'''
+"""
 this function updates the product table according to the changes of a product quantity changes in the machine_stock table
 product_id - the primary key of the product we wish to update its quantity
 quantity_in_machine - the quantity of the product in a vending machine
 new_quantity - the new quantity of the product in the machine
-return quantity_validation which tells if the update is success or not if success the return 
+return quantity_validation which tells if the update is success or not if success the return
         the number of that product else return none
-'''
+"""
 
 
 def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
@@ -105,9 +107,14 @@ def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
     quantity_validation = None
     try:
         product_in_warehouse = session.query(Products).filter_by(id=product_id).first()
-        product_in_warehouse.product_quantity = int(product_in_warehouse.product_quantity) - (
-                int(new_quantity) - int(quantity_in_machine))
-        if product_in_warehouse.product_quantity >= 0 and int(new_quantity) >= 0 and int(quantity_in_machine) >= 0:
+        product_in_warehouse.product_quantity = int(
+            product_in_warehouse.product_quantity
+        ) - (int(new_quantity) - int(quantity_in_machine))
+        if (
+            product_in_warehouse.product_quantity >= 0
+            and int(new_quantity) >= 0
+            and int(quantity_in_machine) >= 0
+        ):
             quantity_validation = product_in_warehouse.product_quantity
             session.commit()
         session.close()

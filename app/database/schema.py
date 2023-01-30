@@ -1,8 +1,8 @@
 import datetime as dt
 
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Float
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 
-from app.database.engine import Engine, Base
+from app.database.engine import Base, Engine
 
 """
 This file contain all tables of the database
@@ -12,7 +12,7 @@ Base.metadata.create_all(Engine)
 
 
 class vendingMachine(Base):
-    __tablename__ = 'vending_machines'
+    __tablename__ = "vending_machines"
     id = Column(Integer, primary_key=True)
     machine_name = Column(String(100))
     machine_location = Column(String(100))
@@ -28,13 +28,13 @@ class vendingMachine(Base):
             "id": self.id,
             "name": self.machine_name,
             "location": self.machine_location,
-            "installed_at": self.installed_at
+            "installed_at": self.installed_at,
         }
         return query_dict
 
 
 class Products(Base):
-    __tablename__ = 'products'
+    __tablename__ = "products"
     id = Column(Integer, primary_key=True)
     product_name = Column(String(100))
     product_code = Column(Integer, unique=True)
@@ -53,7 +53,7 @@ class Products(Base):
             "product_name": self.product_name,
             "product_quantity": self.product_quantity,
             "product_code": self.product_code,
-            "price_per_unit": self.price_per_unit
+            "price_per_unit": self.price_per_unit,
         }
         return query_dict
 
@@ -61,8 +61,8 @@ class Products(Base):
 class MachineStock(Base):
     __tablename__ = "machine_stocks"
     id = Column(Integer, primary_key=True)
-    machine_id = Column(Integer, ForeignKey('vending_machines.id'))
-    product_id = Column(Integer, ForeignKey('products.id'))
+    machine_id = Column(Integer, ForeignKey("vending_machines.id"))
+    product_id = Column(Integer, ForeignKey("products.id"))
     quantity = Column(Integer)
 
     def __init__(self, machine_id, product_id, quantity):
@@ -75,6 +75,6 @@ class MachineStock(Base):
             "id": self.id,
             "machine_id": self.machine_id,
             "product_id": self.product_id,
-            "quantity": self.quantity
+            "quantity": self.quantity,
         }
         return query_dict
