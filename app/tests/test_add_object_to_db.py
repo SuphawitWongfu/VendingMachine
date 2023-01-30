@@ -1,4 +1,6 @@
-from app.database.queryUtils import *
+from app.database.engine import Session
+from app.database.queryUtils import add_obj_to_db
+from app.database.schema import MachineStock, Products, vendingMachine
 
 
 def test_add_vending_machine():

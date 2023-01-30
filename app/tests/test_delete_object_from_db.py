@@ -1,4 +1,6 @@
-from app.database.queryUtils import *
+from app.database.engine import Session
+from app.database.queryUtils import delete_obj_from_db
+from app.database.schema import MachineStock, Products, vendingMachine
 
 
 def setup_db_for_delete(table_name, row_object):

@@ -1,7 +1,10 @@
 from flask import Flask
 
 from app.database.db import mysql_uri
-from app.database.schema import *
+from app.database.engine import Base, Engine
+from app.endpoints.machine_stocks import machine_stocks
+from app.endpoints.products import products
+from app.endpoints.vending_machine import vending_machine
 
 """
 This file is for running the app. To run the app, type "flask run" in the terminal
@@ -10,13 +13,10 @@ This file is for running the app. To run the app, type "flask run" in the termin
 app = Flask(__name__)
 
 # register Blueprints
-from app.endpoints.vending_machine import vending_machine
 
 app.register_blueprint(vending_machine)
-from app.endpoints.products import products
 
 app.register_blueprint(products)
-from app.endpoints.machine_stocks import machine_stocks
 
 app.register_blueprint(machine_stocks)
 

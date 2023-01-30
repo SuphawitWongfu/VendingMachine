@@ -1,5 +1,5 @@
 from app.database.engine import Session
-from app.database.schema import *
+from app.database.schema import Products
 
 """
 this file contains utilities functions for CRUD operation in the database

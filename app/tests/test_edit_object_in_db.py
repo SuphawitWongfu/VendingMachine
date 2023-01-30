@@ -1,6 +1,6 @@
 from app.database.engine import Session
 from app.database.queryUtils import update_database_row_by_id
-from app.database.schema import *
+from app.database.schema import MachineStock, Products, vendingMachine
 
 
 def setup_object_for_edit(table_name, row_object):
