@@ -1,4 +1,4 @@
-#from app.credentials import *
+# from app.credentials import *
 import os
 
 """
@@ -6,7 +6,7 @@ This file get the credentials of mysql database from environmental variable and 
 the database
 """
 
-#prepare_credentials()
+# prepare_credentials()
 
 db_user = os.environ.get("mysql_user")
 db_password = os.environ.get("mysql_password")
