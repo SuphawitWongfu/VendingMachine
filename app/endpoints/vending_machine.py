@@ -1,13 +1,18 @@
-from flask import Blueprint, jsonify, redirect, request, url_for
+from flask import Blueprint, Response, jsonify, redirect, request, url_for
 
-from app.database.queryUtils import (add_obj_to_db,
-                                     are_all_query_string_present,
-                                     bad_request_400, delete_obj_from_db,
-                                     dict_helper, get_all_from_table,
-                                     no_content_204, select_obj,
-                                     select_obj_list,
-                                     update_database_row_by_id,
-                                     update_warehouse_quantity)
+from app.database.queryUtils import (
+    add_obj_to_db,
+    are_all_query_string_present,
+    bad_request_400,
+    delete_obj_from_db,
+    dict_helper,
+    get_all_from_table,
+    no_content_204,
+    select_obj,
+    select_obj_list,
+    update_database_row_by_id,
+    update_warehouse_quantity,
+)
 from app.database.schema import MachineStock, vendingMachine
 
 """
@@ -19,7 +24,7 @@ vending_machine = Blueprint("vending_machine", __name__)
 
 
 @vending_machine.route("/add_vendings/", methods=["GET", "POST"])
-def add_vending_machine():
+def add_vending_machine() -> Response:
     query_strings = request.args
     # making sure that all query string needed are presented
     addable = are_all_query_string_present(
@@ -35,7 +40,7 @@ def add_vending_machine():
 
 
 @vending_machine.route("/vendings/", methods=["GET"])
-def view_vending_machine():
+def view_vending_machine() -> Response:
     queries = get_all_from_table(vendingMachine)
     if not queries:
         return no_content_204  # return 204 NO CONTENT if the table is empty
@@ -44,7 +49,7 @@ def view_vending_machine():
 
 
 @vending_machine.route("/edit_vendings/", methods=["GET", "POST"])
-def edit_vending_machine():
+def edit_vending_machine() -> Response:
     query_strings = request.args
     # check if the target machine exist in the database
     if query_strings and "id" in query_strings:
@@ -53,7 +58,7 @@ def edit_vending_machine():
 
 
 @vending_machine.route("/delete_vendings/", methods=["GET", "POST", "DELETE"])
-def delete_vending_machine():
+def delete_vending_machine() -> Response:
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))
     if not provided_id:

@@ -1,5 +1,9 @@
+from typing import Dict, Iterable, List, Type
+
+from sqlalchemy.exc import SQLAlchemyError
+
 from app.database.engine import Session
-from app.database.schema import Products
+from app.database.schema import MachineStock, Products, vendingMachine
 
 """
 this file contains utilities functions for CRUD operation in the database
@@ -15,71 +19,83 @@ return - a list of dictionaries in which each dictionary is create using obj_to_
 """
 
 
-def dict_helper(objlist):
+def dict_helper(
+    objlist: List[vendingMachine | Products | MachineStock],
+) -> List[Dict[str, str]]:
     result = [item.obj_to_dict() for item in objlist]
     return result
 
 
-def add_obj_to_db(obj):
+def add_obj_to_db(obj: vendingMachine | Products | MachineStock) -> None:
     if obj is not None:
         session = Session()
         try:
             session.add(obj)
             session.commit()
             session.close()
-        except:
+        except SQLAlchemyError:
             session.close()
 
 
-def select_obj(table_name, search_params):
+def select_obj(
+    table_name: vendingMachine | Products | MachineStock, search_params: Dict[str, str]
+) -> vendingMachine | Products | MachineStock:
     session = Session()
     obj = None
     try:
         obj = session.query(table_name).filter_by(**search_params).first()
         session.close()
-    except:
+    except SQLAlchemyError:
         session.close()
     return obj
 
 
-def select_obj_list(table_name, search_params):
+def select_obj_list(
+    table_name: vendingMachine | Products | MachineStock, search_params: Dict[str, str]
+) -> List[vendingMachine | Products | MachineStock]:
     session = Session()
     obj_list = None
     try:
         obj_list = session.query(table_name).filter_by(**search_params).all()
         session.close()
-    except:
+    except SQLAlchemyError:
         session.close()
     return obj_list
 
 
-def delete_obj_from_db(obj):
+def delete_obj_from_db(obj: vendingMachine | Products | MachineStock) -> None:
     if obj is not None:
         session = Session()
         try:
             session.delete(obj)
             session.commit()
             session.close()
-        except:
+        except SQLAlchemyError:
             session.close()
 
 
-def get_all_from_table(table_class):
+def get_all_from_table(
+    table_class: Type[vendingMachine | Products | MachineStock],
+) -> List[vendingMachine | Products | MachineStock]:
     session = Session()
     queries = None
     try:
         queries = session.query(table_class).all()
         session.close()
-    except:
+    except SQLAlchemyError:
         session.close()
     return queries
 
 
-def are_all_query_string_present(query_strings, target_sets):
+def are_all_query_string_present(
+    query_strings: Dict[str, str], target_sets: Iterable[str]
+) -> bool:
     return all(query_string in query_strings for query_string in target_sets)
 
 
-def is_exist(table_name, search_params):
+def is_exist(
+    table_name: vendingMachine | Products | MachineStock, search_params: Dict[str, str]
+) -> bool:
     session = Session()
     result = False
     try:
@@ -87,7 +103,7 @@ def is_exist(table_name, search_params):
             session.query(table_name).filter_by(**search_params).first() is not None
         )
         session.close()
-    except:
+    except SQLAlchemyError:
         session.close()
     return result
 
@@ -102,7 +118,9 @@ return quantity_validation which tells if the update is success or not if succes
 """
 
 
-def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
+def update_warehouse_quantity(
+    product_id: str, quantity_in_machine: str, new_quantity: str
+) -> int | None:
     session = Session()
     quantity_validation = None
     try:
@@ -118,12 +136,14 @@ def update_warehouse_quantity(product_id, quantity_in_machine, new_quantity):
             quantity_validation = product_in_warehouse.product_quantity
             session.commit()
         session.close()
-    except:
+    except SQLAlchemyError:
         session.close()
     return quantity_validation
 
 
-def update_database_row_by_id(table_class, query_strings):
+def update_database_row_by_id(
+    table_class: vendingMachine | Products | MachineStock, query_strings: Dict[str, str]
+) -> None:
     session = Session()
     current_item = session.query(table_class).filter_by(id=query_strings["id"]).first()
     if current_item is None:

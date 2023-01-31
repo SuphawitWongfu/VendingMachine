@@ -1,14 +1,23 @@
-from flask import Blueprint, jsonify, redirect, request, url_for
+from typing import Any, Dict
+
+from flask import Blueprint, Response, jsonify, redirect, request, url_for
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.database.engine import Session
-from app.database.queryUtils import (add_obj_to_db,
-                                     are_all_query_string_present,
-                                     bad_request_400, delete_obj_from_db,
-                                     dict_helper, get_all_from_table, is_exist,
-                                     no_content_204, select_obj,
-                                     select_obj_list,
-                                     update_database_row_by_id,
-                                     update_warehouse_quantity)
+from app.database.queryUtils import (
+    add_obj_to_db,
+    are_all_query_string_present,
+    bad_request_400,
+    delete_obj_from_db,
+    dict_helper,
+    get_all_from_table,
+    is_exist,
+    no_content_204,
+    select_obj,
+    select_obj_list,
+    update_database_row_by_id,
+    update_warehouse_quantity,
+)
 from app.database.schema import MachineStock, Products, vendingMachine
 
 """
@@ -24,7 +33,7 @@ return true if all criteria are passed else return false
 """
 
 
-def validate_product_and_machine(query_strings):
+def validate_product_and_machine(query_strings: Dict[str, str]) -> bool:
     query_strings_are_valid = are_all_query_string_present(
         query_strings, ("machine_id", "product_id", "quantity")
     )
@@ -45,7 +54,9 @@ def validate_product_and_machine(query_strings):
     )
 
 
-def validate_product_quantity(query_strings, product_available):
+def validate_product_quantity(
+    query_strings: Dict[str, str], product_available: bool
+) -> bool:
     quantity_not_negative = int(query_strings["quantity"]) >= 0
     product_is_enough = False
     if product_available:
@@ -56,7 +67,7 @@ def validate_product_quantity(query_strings, product_available):
     return product_is_enough and quantity_not_negative
 
 
-def add_validate(query_strings):
+def add_validate(query_strings: Dict[str, str]) -> bool:
     product_and_machine_available = validate_product_and_machine(query_strings)
     product_quantity_is_valid = validate_product_quantity(
         query_strings, product_and_machine_available
@@ -65,7 +76,7 @@ def add_validate(query_strings):
 
 
 @machine_stocks.route("/add_machine_stocks/", methods=["GET", "POST"])
-def add_machine_stocks():
+def add_machine_stocks() -> Response:
     query_strings = request.args
     addable = add_validate(query_strings)
 
@@ -83,7 +94,7 @@ def add_machine_stocks():
 
 
 @machine_stocks.route("/machine_stocks/", methods=["GET"])
-def view_machine_stocks():
+def view_machine_stocks() -> Response:
     queries = get_all_from_table(MachineStock)
     no_data = not queries
     if no_data:
@@ -93,7 +104,7 @@ def view_machine_stocks():
 
 
 @machine_stocks.route("/edit_machine_stocks/", methods=["GET", "POST"])
-def edit_machine_stock():
+def edit_machine_stock() -> Response:
     query_strings = request.args
     # check if the target product exist in the database
     if (
@@ -113,7 +124,7 @@ def edit_machine_stock():
 
 
 @machine_stocks.route("/delete_machine_stocks/", methods=["GET", "POST", "DELETE"])
-def delete_machine_stock():
+def delete_machine_stock() -> Response:
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))
     if not provided_id:
@@ -134,7 +145,7 @@ return a dictionary of listings
 """
 
 
-def create_listing(machine_id):
+def create_listing(machine_id: str) -> dict[str, str | int | list[Any]] | Any:
     session = Session()
     try:
         # query vending machine for id and name
@@ -156,7 +167,7 @@ def create_listing(machine_id):
             product_listing.append(product_dict)
         session.close()
         stock_dict["products"] = product_listing
-    except:
+    except SQLAlchemyError:
         session.close()
         return no_content_204
     return stock_dict
@@ -164,7 +175,7 @@ def create_listing(machine_id):
 
 # display the listings of a vending machine which id is specified in query strings
 @machine_stocks.route("/inspect_stocks/", methods=["GET"])
-def inspect_stock():
+def inspect_stock() -> Response:
     query_strings = request.args
     if query_strings and "machine_id" in query_strings:
         stock_dict = create_listing(query_strings["machine_id"])

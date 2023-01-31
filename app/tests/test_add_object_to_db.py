@@ -1,9 +1,11 @@
+"""test adding object to database."""
 from app.database.engine import Session
 from app.database.queryUtils import add_obj_to_db
 from app.database.schema import MachineStock, Products, vendingMachine
 
 
-def test_add_vending_machine():
+def test_add_vending_machine() -> None:
+    """Test adding vending machine object."""
     session = Session()
     new_vending_machine = vendingMachine("test", "test")
     before_add_vending_machine_list = session.query(vendingMachine).all()
@@ -19,7 +21,8 @@ def test_add_vending_machine():
     )
 
 
-def test_add_products():
+def test_add_products() -> None:
+    """Test adding products object."""
     session = Session()
     new_product = Products("test_product_name", 1, 10, 10)
     before_add_product_list = session.query(Products).all()
@@ -33,7 +36,8 @@ def test_add_products():
     assert len(after_add_product_list) - len(before_add_product_list) == 1
 
 
-def test_add_duplicate_products():
+def test_add_duplicate_products() -> None:
+    """Test adding duplicate product object."""
     new_product = Products("test_product_name", 1, 10, 10)
     add_obj_to_db(new_product)
     session = Session()
@@ -50,7 +54,8 @@ def test_add_duplicate_products():
     )
 
 
-def test_add_stock():
+def test_add_stock() -> None:
+    """Test adding machine stock object."""
     new_product = Products("test_product_name", 1, 10, 10)
     new_vending_machine = vendingMachine("test", "test")
     add_obj_to_db(new_product)

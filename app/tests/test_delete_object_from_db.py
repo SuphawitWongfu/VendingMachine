@@ -1,9 +1,14 @@
+from typing import Type
+
 from app.database.engine import Session
 from app.database.queryUtils import delete_obj_from_db
 from app.database.schema import MachineStock, Products, vendingMachine
 
 
-def setup_db_for_delete(table_name, row_object):
+def setup_db_for_delete(
+    table_name: Type[vendingMachine | Products | MachineStock],
+    row_object: vendingMachine | Products | MachineStock,
+) -> Type[vendingMachine | Products | MachineStock]:
     session = Session()
     session.add(row_object)
     session.commit()
@@ -12,7 +17,7 @@ def setup_db_for_delete(table_name, row_object):
     return unwanted_object
 
 
-def test_delete_vending_machine():
+def test_delete_vending_machine() -> None:
     unwanted_vending_machine = setup_db_for_delete(
         vendingMachine, vendingMachine("testname", "testlocation")
     )
@@ -25,7 +30,7 @@ def test_delete_vending_machine():
     assert unwanted_vending_machine_after_delete is None
 
 
-def test_delete_product():
+def test_delete_product() -> None:
     unwanted_product = setup_db_for_delete(Products, Products("test_product", 1, 1, 1))
     assert unwanted_product is not None
     delete_obj_from_db(unwanted_product)
@@ -36,7 +41,7 @@ def test_delete_product():
     assert unwanted_product_after_delete is None
 
 
-def test_delete_stock():
+def test_delete_stock() -> None:
     unwanted_product = setup_db_for_delete(Products, Products("test_product", 1, 1, 1))
     unwanted_vending_machine = setup_db_for_delete(
         vendingMachine, vendingMachine("testname", "testlocation")

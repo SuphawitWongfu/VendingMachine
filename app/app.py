@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, Response
 
 from app.database.db import mysql_uri
 from app.database.engine import Base, Engine
@@ -24,7 +24,7 @@ app.config["SECRET_KEY"] = "thisisasecret"
 
 
 @app.route("/", methods=["GET"])
-def index():
+def index() -> Response:
     return "Vending Machine"
 
 

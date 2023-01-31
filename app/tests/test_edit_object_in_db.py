@@ -1,9 +1,14 @@
+from typing import Type
+
 from app.database.engine import Session
 from app.database.queryUtils import update_database_row_by_id
 from app.database.schema import MachineStock, Products, vendingMachine
 
 
-def setup_object_for_edit(table_name, row_object):
+def setup_object_for_edit(
+    table_name: Type[vendingMachine | Products | MachineStock],
+    row_object: vendingMachine | Products | MachineStock,
+) -> vendingMachine | Products | MachineStock:
     session = Session()
     session.add(row_object)
     session.commit()
@@ -12,7 +17,7 @@ def setup_object_for_edit(table_name, row_object):
     return to_be_edited_object
 
 
-def clear_db_tables():
+def clear_db_tables() -> None:
     session = Session()
     session.query(MachineStock).delete()
     session.query(vendingMachine).delete()
@@ -21,7 +26,7 @@ def clear_db_tables():
     session.close()
 
 
-def test_edit_vending_machine():
+def test_edit_vending_machine() -> None:
     new_vending_machine = vendingMachine("before edit name", "before edit column")
     to_be_edited_vending_machine = setup_object_for_edit(
         vendingMachine, new_vending_machine
@@ -49,7 +54,7 @@ def test_edit_vending_machine():
     assert location_is_edited
 
 
-def test_edit_product():
+def test_edit_product() -> None:
     new_product = Products("before_edit_name", 1, 0, 0)
     to_be_edited_product = setup_object_for_edit(Products, new_product)
     mock_query_strings = {
@@ -84,7 +89,7 @@ def test_edit_product():
     assert price_is_edited
 
 
-def test_edit_stock():
+def test_edit_stock() -> None:
     clear_db_tables()
     new_vending_machine = vendingMachine("before edit name", "before edit column")
     new_product = Products("before_edit_name", 1, 1, 1)
