@@ -46,9 +46,11 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: create yml
-        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml && cat docker-compose.yml
+        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml
       - name: create mysql server
         run: docker compose up -d
+      - name: create env
+        run: echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: Install Poetry
         run: |
