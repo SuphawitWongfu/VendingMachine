@@ -3,6 +3,10 @@ from typing import Type
 from app.database.engine import Session
 from app.database.queryUtils import delete_obj_from_db
 from app.database.schema import MachineStock, Products, vendingMachine
+from app.tests.conftest import create_app
+
+
+create_app()
 
 
 def setup_db_for_delete(

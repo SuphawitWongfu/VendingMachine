@@ -52,6 +52,7 @@ jobs:
       - name: create env
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
+
       - name: Install Poetry
         run: |
           curl -sL https://install.python-poetry.org | POETRY_VERSION=${{ env.POETRY_VERSION }} python - -y
@@ -69,6 +70,10 @@ jobs:
       - name: Install dependencies
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: poetry install
+
+      - name: create table
+        run: poetry run python
+
 
       - name: Test with Pytest
         run: |

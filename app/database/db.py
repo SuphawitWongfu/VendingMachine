@@ -20,4 +20,4 @@ mysql_db = os.getenv("vending_db")
 
 print(db_user, db_password, db_host, mysql_db)
 
-mysql_uri = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:3306/{mysql_db}"
+mysql_uri = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:3308/{mysql_db}"

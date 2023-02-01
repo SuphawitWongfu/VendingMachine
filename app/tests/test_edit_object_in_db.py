@@ -3,6 +3,10 @@ from typing import Type
 from app.database.engine import Session
 from app.database.queryUtils import update_database_row_by_id
 from app.database.schema import MachineStock, Products, vendingMachine
+from app.tests.conftest import create_app
+
+
+create_app()
 
 
 def setup_object_for_edit(
