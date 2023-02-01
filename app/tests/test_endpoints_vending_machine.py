@@ -20,6 +20,7 @@ def tester(client: FlaskClient) -> MachineTester:
 def test_view_vending_machine(tester: MachineTester) -> None:
     response = tester.get_all_machines()
     assert Tester.expect(response, 200) or Tester.expect(response, 204)
+    clear_db(vendingMachine)
 
 
 def test_adding_vending_machine(client: FlaskClient) -> None:
@@ -30,6 +31,7 @@ def test_adding_vending_machine(client: FlaskClient) -> None:
     )
     assert response.status_code == 200 or response.status_code == 204
     assert len(response.json) != 0
+    clear_db(vendingMachine)
 
 
 def test_edit_vending_machine(client: FlaskClient) -> None:
@@ -50,6 +52,7 @@ def test_edit_vending_machine(client: FlaskClient) -> None:
     assert edited_test_entry.id == test_data["id"]
     assert edited_test_entry.machine_name == test_data["machine_name"]
     assert edited_test_entry.machine_location == test_data["machine_location"]
+    clear_db(vendingMachine)
 
 
 def test_delete_vending_machine(client: FlaskClient) -> None:
@@ -61,12 +64,14 @@ def test_delete_vending_machine(client: FlaskClient) -> None:
     )
     assert response.status_code == 200 or response.status_code == 204
     assert response.json is None
+    clear_db(vendingMachine)
 
 
 def test_failed_add_vending_machine(client: FlaskClient) -> None:
     clear_db(vendingMachine)
     response = client.get("/add_vendings/", query_string={}, follow_redirects=True)
     assert response.status_code == 400
+    clear_db(vendingMachine)
 
 
 def test_failed_delete_vending_machine(client: FlaskClient) -> None:
@@ -75,3 +80,4 @@ def test_failed_delete_vending_machine(client: FlaskClient) -> None:
         "/delete_vendings/", query_string={}, follow_redirects=True
     )
     assert response.status_code == 400
+    clear_db(vendingMachine)
