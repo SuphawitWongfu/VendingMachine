@@ -38,16 +38,17 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: create yml
-        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml && cat docker-compose.yml
-      - name: create mysql server
-        run: docker compose up
       - uses: actions/checkout@v2
 
       - name: Set up Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: create yml
+        run: echo "${{ secrets.DOCKER_COMPOSE }}" > docker-compose.yml && cat docker-compose.yml
+      - name: create mysql server
+        run: docker compose up -d
 
       - name: Install Poetry
         run: |
