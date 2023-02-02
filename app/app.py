@@ -25,7 +25,7 @@ def create_app() -> Flask:
 
     app.register_blueprint(machine_stocks)
 
-    app.config["SECRET_KEY"] = secret_key
+    app.secret_key = secret_key
 
     @app.route("/", methods=["GET"])
     def index() -> Response:
