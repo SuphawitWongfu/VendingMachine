@@ -124,7 +124,7 @@ jobs:
           path: dist
           if-no-files-found: error
 
-  SonarCloud analysis:
+  SonarCloud:
     # runs after test-and-coverage job
     needs: test-and-coverage
     runs-on: ubuntu-latest
