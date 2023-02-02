@@ -5,7 +5,7 @@ from flask.testing import FlaskClient
 from werkzeug.test import TestResponse
 
 from app.tests.conftest import Tester, clear_db, get_test_entry
-from app.database.schema import MachineStock, Products, vendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine
 from app.database.queryUtils import add_obj_to_db
 
 
@@ -34,8 +34,8 @@ class StockTester(Tester):
     def setup_test_env(self):
         clear_db(MachineStock)
         clear_db(Products)
-        clear_db(vendingMachine)
-        add_obj_to_db(vendingMachine("test_name", "test_loco"))
+        clear_db(VendingMachine)
+        add_obj_to_db(VendingMachine("test_name", "test_loco"))
         add_obj_to_db(Products("test_name", 69, 10, 10))
 
 
@@ -49,12 +49,12 @@ def test_view_stocks(tester: StockTester) -> None:
     assert tester.expect(response, 200) or tester.expect(response, 204)
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_add_stocks(tester: StockTester) -> None:
     tester.setup_test_env()
-    test_machine = get_test_entry(vendingMachine)
+    test_machine = get_test_entry(VendingMachine)
     test_prod = get_test_entry(Products)
     test_data = {
         "machine_id": test_machine.id,
@@ -69,12 +69,12 @@ def test_add_stocks(tester: StockTester) -> None:
     assert test_stock is not None
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_add_stocks_fail(tester: StockTester) -> None:
     tester.setup_test_env()
-    test_machine = get_test_entry(vendingMachine)
+    test_machine = get_test_entry(VendingMachine)
     test_prod = get_test_entry(Products)
     test_data_1 = {"product_id": test_prod.id, "quantity": 5}
     test_data_2 = {
@@ -88,12 +88,12 @@ def test_add_stocks_fail(tester: StockTester) -> None:
     assert tester.expect(response_2, 400)
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_edit_stocks(tester: StockTester) -> None:
     tester.setup_test_env()
-    test_machine = get_test_entry(vendingMachine)
+    test_machine = get_test_entry(VendingMachine)
     test_prod = get_test_entry(Products)
     add_data = {
         "machine_id": test_machine.id,
@@ -116,12 +116,12 @@ def test_edit_stocks(tester: StockTester) -> None:
     assert test_stock.quantity == test_data["quantity"]
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_edit_stocks_fail(tester: StockTester) -> None:
     tester.setup_test_env()
-    test_machine = get_test_entry(vendingMachine)
+    test_machine = get_test_entry(VendingMachine)
     test_prod = get_test_entry(Products)
     add_data = {
         "machine_id": test_machine.id,
@@ -142,12 +142,12 @@ def test_edit_stocks_fail(tester: StockTester) -> None:
     assert to_be_edit_stock.quantity == stock_after_edit.quantity
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_delete_stocks(tester: StockTester) -> None:
     tester.setup_test_env()
-    test_machine = get_test_entry(vendingMachine)
+    test_machine = get_test_entry(VendingMachine)
     test_prod = get_test_entry(Products)
     add_data = {
         "machine_id": test_machine.id,
@@ -164,12 +164,12 @@ def test_delete_stocks(tester: StockTester) -> None:
     assert after_delete_stock is None
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_delete_stocks_fail(tester: StockTester) -> None:
     tester.setup_test_env()
-    test_machine = get_test_entry(vendingMachine)
+    test_machine = get_test_entry(VendingMachine)
     test_prod = get_test_entry(Products)
     add_data = {
         "machine_id": test_machine.id,
@@ -186,7 +186,7 @@ def test_delete_stocks_fail(tester: StockTester) -> None:
     assert after_delete_stock is not None
     clear_db(MachineStock)
     clear_db(Products)
-    clear_db(vendingMachine)
+    clear_db(VendingMachine)
 
 
 def test_inspect_stock(tester: StockTester) -> None:

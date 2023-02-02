@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List, Type
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.database.engine import Session
-from app.database.schema import MachineStock, Products, vendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine
 
 """
 this file contains utilities functions for CRUD operation in the database
@@ -20,13 +20,13 @@ return - a list of dictionaries in which each dictionary is create using obj_to_
 
 
 def dict_helper(
-    objlist: List[vendingMachine | Products | MachineStock],
+    objlist: List[VendingMachine | Products | MachineStock],
 ) -> List[Dict[str, str]]:
     result = [item.obj_to_dict() for item in objlist]
     return result
 
 
-def add_obj_to_db(obj: vendingMachine | Products | MachineStock) -> None:
+def add_obj_to_db(obj: VendingMachine | Products | MachineStock) -> None:
     if obj is not None:
         session = Session()
         try:
@@ -38,8 +38,8 @@ def add_obj_to_db(obj: vendingMachine | Products | MachineStock) -> None:
 
 
 def select_obj(
-    table_name: vendingMachine | Products | MachineStock, search_params: Dict[str, str]
-) -> vendingMachine | Products | MachineStock:
+    table_name: VendingMachine | Products | MachineStock, search_params: Dict[str, str]
+) -> VendingMachine | Products | MachineStock:
     session = Session()
     obj = None
     try:
@@ -51,8 +51,8 @@ def select_obj(
 
 
 def select_obj_list(
-    table_name: vendingMachine | Products | MachineStock, search_params: Dict[str, str]
-) -> List[vendingMachine | Products | MachineStock]:
+    table_name: VendingMachine | Products | MachineStock, search_params: Dict[str, str]
+) -> List[VendingMachine | Products | MachineStock]:
     session = Session()
     obj_list = None
     try:
@@ -63,7 +63,7 @@ def select_obj_list(
     return obj_list
 
 
-def delete_obj_from_db(obj: vendingMachine | Products | MachineStock) -> None:
+def delete_obj_from_db(obj: VendingMachine | Products | MachineStock) -> None:
     if obj is not None:
         session = Session()
         try:
@@ -75,8 +75,8 @@ def delete_obj_from_db(obj: vendingMachine | Products | MachineStock) -> None:
 
 
 def get_all_from_table(
-    table_class: Type[vendingMachine | Products | MachineStock],
-) -> List[vendingMachine | Products | MachineStock]:
+    table_class: Type[VendingMachine | Products | MachineStock],
+) -> List[VendingMachine | Products | MachineStock]:
     session = Session()
     queries = None
     try:
@@ -94,7 +94,7 @@ def are_all_query_string_present(
 
 
 def is_exist(
-    table_name: vendingMachine | Products | MachineStock, search_params: Dict[str, str]
+    table_name: VendingMachine | Products | MachineStock, search_params: Dict[str, str]
 ) -> bool:
     session = Session()
     result = False
@@ -119,7 +119,7 @@ return quantity_validation which tells if the update is success or not if succes
 
 
 def update_warehouse_quantity(
-    product_id: str, quantity_in_machine: str, new_quantity: str
+    product_id: str | int, quantity_in_machine: str | int, new_quantity: str | int
 ) -> int | None:
     session = Session()
     quantity_validation = None
@@ -142,7 +142,7 @@ def update_warehouse_quantity(
 
 
 def update_database_row_by_id(
-    table_class: vendingMachine | Products | MachineStock, query_strings: Dict[str, str]
+    table_class: VendingMachine | Products | MachineStock, query_strings: Dict[str, str]
 ) -> None:
     session = Session()
     current_item = session.query(table_class).filter_by(id=query_strings["id"]).first()

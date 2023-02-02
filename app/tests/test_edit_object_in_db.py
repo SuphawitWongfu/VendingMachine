@@ -2,7 +2,7 @@ from typing import Type
 
 from app.database.engine import Session
 from app.database.queryUtils import update_database_row_by_id
-from app.database.schema import MachineStock, Products, vendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine
 from app.tests.conftest import create_app
 
 
@@ -10,9 +10,9 @@ create_app()
 
 
 def setup_object_for_edit(
-    table_name: Type[vendingMachine | Products | MachineStock],
-    row_object: vendingMachine | Products | MachineStock,
-) -> vendingMachine | Products | MachineStock:
+    table_name: Type[VendingMachine | Products | MachineStock],
+    row_object: VendingMachine | Products | MachineStock,
+) -> VendingMachine | Products | MachineStock:
     session = Session()
     session.add(row_object)
     session.commit()
@@ -24,26 +24,26 @@ def setup_object_for_edit(
 def clear_db_tables() -> None:
     session = Session()
     session.query(MachineStock).delete()
-    session.query(vendingMachine).delete()
+    session.query(VendingMachine).delete()
     session.query(Products).delete()
     session.commit()
     session.close()
 
 
 def test_edit_vending_machine() -> None:
-    new_vending_machine = vendingMachine("before edit name", "before edit column")
+    new_vending_machine = VendingMachine("before edit name", "before edit column")
     to_be_edited_vending_machine = setup_object_for_edit(
-        vendingMachine, new_vending_machine
+        VendingMachine, new_vending_machine
     )
     mock_query_strings = {
         "id": to_be_edited_vending_machine.id,
         "machine_name": "after_edit_name",
         "machine_location": "after_edit_location",
     }
-    update_database_row_by_id(vendingMachine, mock_query_strings)
+    update_database_row_by_id(VendingMachine, mock_query_strings)
     session = Session()
     after_edit_vending_machine = (
-        session.query(vendingMachine).filter_by(id=mock_query_strings["id"]).first()
+        session.query(VendingMachine).filter_by(id=mock_query_strings["id"]).first()
     )
     session.close()
     name_is_edited = (
@@ -95,10 +95,10 @@ def test_edit_product() -> None:
 
 def test_edit_stock() -> None:
     clear_db_tables()
-    new_vending_machine = vendingMachine("before edit name", "before edit column")
+    new_vending_machine = VendingMachine("before edit name", "before edit column")
     new_product = Products("before_edit_name", 1, 1, 1)
     vending_machine_for_stock = setup_object_for_edit(
-        vendingMachine, new_vending_machine
+        VendingMachine, new_vending_machine
     )
     product_for_stock = setup_object_for_edit(Products, new_product)
 

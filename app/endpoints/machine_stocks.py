@@ -18,7 +18,9 @@ from app.database.queryUtils import (
     update_database_row_by_id,
     update_warehouse_quantity,
 )
-from app.database.schema import MachineStock, Products, vendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine
+
+view_machine_stock_endpoint = "machine_stocks.view_machine_stocks"
 
 """
 this file contains all function regarding CRUD operation for machine_stock table
@@ -45,7 +47,7 @@ def validate_product_and_machine(query_strings: Dict[str, str]) -> bool:
         },
     )
     product_exists = is_exist(Products, {"id": query_strings["product_id"]})
-    machine_exists = is_exist(vendingMachine, {"id": query_strings["machine_id"]})
+    machine_exists = is_exist(VendingMachine, {"id": query_strings["machine_id"]})
     return (
         product_exists
         and machine_exists
@@ -90,7 +92,7 @@ def add_machine_stocks() -> Response:
     add_obj_to_db(new_machine_stock)
     update_warehouse_quantity(query_strings["product_id"], 0, query_strings["quantity"])
 
-    return redirect(url_for("machine_stocks.view_machine_stocks"))
+    return redirect(url_for(view_machine_stock_endpoint))
 
 
 @machine_stocks.route("/machine_stocks/", methods=["GET"])
@@ -120,7 +122,7 @@ def edit_machine_stock() -> Response:
         if quantity_validation is not None:
             update_database_row_by_id(MachineStock, query_strings)
 
-    return redirect(url_for("machine_stocks.view_machine_stocks"))
+    return redirect(url_for(view_machine_stock_endpoint))
 
 
 @machine_stocks.route("/delete_machine_stocks/", methods=["DELETE"])
@@ -135,7 +137,7 @@ def delete_machine_stock() -> Response:
             unwanted_product.product_id, unwanted_product.quantity, 0
         )
         delete_obj_from_db(unwanted_product)
-    return redirect(url_for("machine_stocks.view_machine_stocks"))
+    return redirect(url_for(view_machine_stock_endpoint))
 
 
 """
@@ -150,7 +152,7 @@ def create_listing(machine_id: str) -> dict[str, str | int | list[Any]] | Any:
     try:
         # query vending machine for id and name
         stock_obj_list = select_obj_list(MachineStock, {"machine_id": machine_id})
-        machine_obj = select_obj(vendingMachine, {"id": machine_id})
+        machine_obj = select_obj(VendingMachine, {"id": machine_id})
         stock_dict = {
             "machine_id": machine_obj.id,
             "machine_name": machine_obj.machine_name,

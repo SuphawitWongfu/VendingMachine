@@ -10,7 +10,7 @@ from app.database.engine import Base, Engine
 Base.metadata.create_all(Engine)
 
 
-class vendingMachine(Base):
+class VendingMachine(Base):
     """A class represents vending_machine table in the database."""
 
     __tablename__ = "vending_machines"

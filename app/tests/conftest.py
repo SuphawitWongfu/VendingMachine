@@ -8,7 +8,7 @@ from werkzeug.test import TestResponse
 
 from app.app import create_app
 from app.database.engine import Session
-from app.database.schema import vendingMachine, MachineStock, Products
+from app.database.schema import VendingMachine, MachineStock, Products
 
 
 @pytest.fixture()
@@ -37,7 +37,7 @@ def client(app: Flask) -> FlaskClient:
     return app.test_client()
 
 
-def clear_db(table_class: Type[vendingMachine | Products | MachineStock]) -> None:
+def clear_db(table_class: Type[VendingMachine | Products | MachineStock]) -> None:
     session = Session()
     session.query(table_class).delete()
     session.commit()
@@ -45,8 +45,8 @@ def clear_db(table_class: Type[vendingMachine | Products | MachineStock]) -> Non
 
 
 def get_test_entry(
-    table_class: Type[vendingMachine | Products | MachineStock],
-) -> vendingMachine | Products | MachineStock:
+    table_class: Type[VendingMachine | Products | MachineStock],
+) -> VendingMachine | Products | MachineStock:
     session = Session()
     test_entry = session.query(table_class).first()
     session.close()

@@ -1,11 +1,11 @@
-from flask import Flask, Response
+from flask import Flask
+from flask_wtf import CSRFProtect
 
 from app.database.db import mysql_uri, secret_key
 from app.database.engine import Base, Engine
 from app.endpoints.machine_stocks import machine_stocks
 from app.endpoints.products import products
 from app.endpoints.vending_machine import vending_machine
-from flask_wtf import CSRFProtect
 
 """
 This file is for running the app. To run the app, type "flask run" in the terminal
@@ -28,7 +28,7 @@ def create_app() -> Flask:
     app.secret_key = secret_key
 
     @app.route("/", methods=["GET"])
-    def index() -> Response:
+    def index() -> str:
         return "Vending Machine"
 
     # setup app config

@@ -30,6 +30,8 @@ query_strings - the query strings which are passed in as argument in the url
 return true if all criteria are passed else return false
 """
 
+view_product_endpoint = "products.view_products"
+
 
 def add_validate(query_strings: Dict[str, str]) -> bool:
     query_strings_are_valid = are_all_query_string_present(
@@ -57,7 +59,7 @@ def add_products() -> Response:
         query_strings["price_per_unit"],
     )
     add_obj_to_db(new_vend)
-    return redirect(url_for("products.view_products"))
+    return redirect(url_for(view_product_endpoint))
 
 
 @products.route("/products/", methods=["GET"])
@@ -75,7 +77,7 @@ def edit_vending_machine() -> Response:
     # check if the target machine exist in the database
     if query_strings and "id" in query_strings:
         update_database_row_by_id(Products, query_strings)
-    return redirect(url_for("products.view_products"))
+    return redirect(url_for(view_product_endpoint))
 
 
 @products.route("/delete_products/", methods=["DELETE"])
@@ -89,4 +91,4 @@ def delete_vending_machine() -> Response:
         delete_obj_from_db(obj)
     unwanted_product = select_obj(Products, {"id": query_strings["id"]})
     delete_obj_from_db(unwanted_product)
-    return redirect(url_for("products.view_products"))
+    return redirect(url_for(view_product_endpoint))

@@ -13,7 +13,7 @@ from app.database.queryUtils import (
     update_database_row_by_id,
     update_warehouse_quantity,
 )
-from app.database.schema import MachineStock, vendingMachine
+from app.database.schema import MachineStock, VendingMachine
 
 """
 This file contains CRUD operation regarding vending_machine table
@@ -21,6 +21,8 @@ all endpoints are redirected back to /vendings/ which return JSON object of the 
 """
 
 vending_machine = Blueprint("vending_machine", __name__)
+
+view_vending_machine_endpoint = "vending_machine.view_vending_machine"
 
 
 @vending_machine.route("/add_vendings/", methods=["POST"])
@@ -32,16 +34,16 @@ def add_vending_machine() -> Response:
     )
     if not addable:
         return bad_request_400
-    new_vend = vendingMachine(
+    new_vend = VendingMachine(
         query_strings["machine_name"], query_strings["machine_location"]
     )
     add_obj_to_db(new_vend)
-    return redirect(url_for("vending_machine.view_vending_machine"))
+    return redirect(url_for(view_vending_machine_endpoint))
 
 
 @vending_machine.route("/vendings/", methods=["GET"])
 def view_vending_machine() -> Response:
-    queries = get_all_from_table(vendingMachine)
+    queries = get_all_from_table(VendingMachine)
     if not queries:
         return no_content_204  # return 204 NO CONTENT if the table is empty
     vending_machines = dict_helper(queries)
@@ -53,8 +55,8 @@ def edit_vending_machine() -> Response:
     query_strings = request.args
     # check if the target machine exist in the database
     if query_strings and "id" in query_strings:
-        update_database_row_by_id(vendingMachine, query_strings)
-    return redirect(url_for("vending_machine.view_vending_machine"))
+        update_database_row_by_id(VendingMachine, query_strings)
+    return redirect(url_for(view_vending_machine_endpoint))
 
 
 @vending_machine.route("/delete_vendings/", methods=["DELETE"])
@@ -67,6 +69,6 @@ def delete_vending_machine() -> Response:
     for obj in stock_obj_list:
         update_warehouse_quantity(obj.product_id, obj.quantity, 0)
         delete_obj_from_db(obj)
-    unwanted_vending_machine = select_obj(vendingMachine, {"id": query_strings["id"]})
+    unwanted_vending_machine = select_obj(VendingMachine, {"id": query_strings["id"]})
     delete_obj_from_db(unwanted_vending_machine)
-    return redirect(url_for("vending_machine.view_vending_machine"))
+    return redirect(url_for(view_vending_machine_endpoint))
