@@ -75,7 +75,7 @@ def add_validate(query_strings: Dict[str, str]) -> bool:
     return product_and_machine_available and product_quantity_is_valid
 
 
-@machine_stocks.route("/add_machine_stocks/", methods=["GET", "POST"])
+@machine_stocks.route("/add_machine_stocks/", methods=["POST"])
 def add_machine_stocks() -> Response:
     query_strings = request.args
     addable = add_validate(query_strings)

@@ -1,6 +1,6 @@
 from flask import Flask, Response
 
-from app.database.db import mysql_uri
+from app.database.db import mysql_uri, secret_key
 from app.database.engine import Base, Engine
 from app.endpoints.machine_stocks import machine_stocks
 from app.endpoints.products import products
@@ -25,7 +25,7 @@ def create_app() -> Flask:
 
     app.register_blueprint(machine_stocks)
 
-    app.config["SECRET_KEY"] = "thisisasecret"
+    app.config["SECRET_KEY"] = secret_key
 
     @app.route("/", methods=["GET"])
     def index() -> Response:
