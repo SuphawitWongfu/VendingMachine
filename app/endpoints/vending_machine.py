@@ -23,7 +23,7 @@ all endpoints are redirected back to /vendings/ which return JSON object of the 
 vending_machine = Blueprint("vending_machine", __name__)
 
 
-@vending_machine.route("/add_vendings/", methods=["GET", "POST"])
+@vending_machine.route("/add_vendings/", methods=["POST"])
 def add_vending_machine() -> Response:
     query_strings = request.args
     # making sure that all query string needed are presented
@@ -48,7 +48,7 @@ def view_vending_machine() -> Response:
     return jsonify(vending_machines)
 
 
-@vending_machine.route("/edit_vendings/", methods=["GET", "POST"])
+@vending_machine.route("/edit_vendings/", methods=["POST"])
 def edit_vending_machine() -> Response:
     query_strings = request.args
     # check if the target machine exist in the database
@@ -57,7 +57,7 @@ def edit_vending_machine() -> Response:
     return redirect(url_for("vending_machine.view_vending_machine"))
 
 
-@vending_machine.route("/delete_vendings/", methods=["GET", "POST", "DELETE"])
+@vending_machine.route("/delete_vendings/", methods=["DELETE"])
 def delete_vending_machine() -> Response:
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))

@@ -41,7 +41,7 @@ def add_validate(query_strings: Dict[str, str]) -> bool:
     return query_strings_are_valid and quantity_not_negative and price_not_negative
 
 
-@products.route("/add_products/", methods=["GET", "POST"])
+@products.route("/add_products/", methods=["POST"])
 def add_products() -> Response:
     #  making sure that all query string needed are presented
     query_strings = request.args
@@ -69,7 +69,7 @@ def view_products() -> Response:
     return jsonify(prods)
 
 
-@products.route("/edit_products/", methods=["GET", "POST"])
+@products.route("/edit_products/", methods=["POST"])
 def edit_vending_machine() -> Response:
     query_strings = request.args
     # check if the target machine exist in the database
@@ -78,7 +78,7 @@ def edit_vending_machine() -> Response:
     return redirect(url_for("products.view_products"))
 
 
-@products.route("/delete_products/", methods=["GET", "POST", "DELETE"])
+@products.route("/delete_products/", methods=["DELETE"])
 def delete_vending_machine() -> Response:
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))

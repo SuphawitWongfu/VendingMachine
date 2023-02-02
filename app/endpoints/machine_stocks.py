@@ -103,7 +103,7 @@ def view_machine_stocks() -> Response:
     return jsonify(stock_list)
 
 
-@machine_stocks.route("/edit_machine_stocks/", methods=["GET", "POST"])
+@machine_stocks.route("/edit_machine_stocks/", methods=["POST"])
 def edit_machine_stock() -> Response:
     query_strings = request.args
     # check if the target product exist in the database
@@ -123,7 +123,7 @@ def edit_machine_stock() -> Response:
     return redirect(url_for("machine_stocks.view_machine_stocks"))
 
 
-@machine_stocks.route("/delete_machine_stocks/", methods=["GET", "POST", "DELETE"])
+@machine_stocks.route("/delete_machine_stocks/", methods=["DELETE"])
 def delete_machine_stock() -> Response:
     query_strings = request.args
     provided_id = are_all_query_string_present(query_strings, ("id",))
