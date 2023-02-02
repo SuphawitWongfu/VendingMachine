@@ -19,6 +19,11 @@ def app():
             "TESTING": True,
         }
     )
+    app.config.update(
+        {
+            "WTF_CSRF_CHECK_DEFAULT": False,
+        }
+    )
 
     # other setup can go here
 

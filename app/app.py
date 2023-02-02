@@ -5,6 +5,7 @@ from app.database.engine import Base, Engine
 from app.endpoints.machine_stocks import machine_stocks
 from app.endpoints.products import products
 from app.endpoints.vending_machine import vending_machine
+from flask_wtf import CSRFProtect
 
 """
 This file is for running the app. To run the app, type "flask run" in the terminal
@@ -13,6 +14,8 @@ This file is for running the app. To run the app, type "flask run" in the termin
 
 def create_app() -> Flask:
     app = Flask(__name__)
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     # register Blueprints
 
