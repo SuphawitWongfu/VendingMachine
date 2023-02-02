@@ -77,7 +77,7 @@ jobs:
 
       - name: Test with Pytest
         run: |
-          poetry run pytest --cov-report=xml:coverage.xml
+          poetry run pytest
       - name: Upload coverage report artifact
         uses: actions/upload-artifact@v2
         with:
