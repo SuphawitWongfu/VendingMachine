@@ -112,9 +112,6 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
-      - name: Build
-        run: |
-          poetry init
       - name: Upload tarball and wheel
         uses: actions/upload-artifact@v2
         with:
