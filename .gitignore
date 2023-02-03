@@ -2,3 +2,5 @@
 credentials.py
 __pycache__/
 poetry.toml
+.env
+poetry.lock
