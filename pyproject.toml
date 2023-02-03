@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "vendingmachine"
+name = "VendingMachine"
 version = "0.1.0"
 description = "vending machines tracker"
 authors = ["Suphawit <suphawit.won@gmail.com>"]
