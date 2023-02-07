@@ -1,6 +1,7 @@
 """This file contain all tables of the database."""
 
 import datetime as dt
+from dataclasses import dataclass
 from typing import Dict
 
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
@@ -89,3 +90,29 @@ class MachineStock(Base):
             "quantity": self.quantity,
         }
         return query_dict
+
+
+@dataclass
+class Timeline(Base):
+    machine_id: int
+    product_id: int
+    quantity: int
+    time_line: dt.datetime
+
+    __tablename__ = "machine_timeline"
+    id = Column(Integer, primary_key=True)
+    machine_id = Column(
+        Integer,
+        ForeignKey("vending_machines.id"),
+        nullable=False,
+    )
+    product_id = Column(
+        Integer,
+        ForeignKey("products.id"),
+        nullable=False,
+    )
+    quantity = Column(
+        Integer,
+        nullable=False,
+    )
+    time_line = Column(DateTime)

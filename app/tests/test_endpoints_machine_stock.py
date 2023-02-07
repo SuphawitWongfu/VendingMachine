@@ -5,7 +5,7 @@ from flask.testing import FlaskClient
 from werkzeug.test import TestResponse
 
 from app.tests.conftest import Tester, clear_db, get_test_entry
-from app.database.schema import MachineStock, Products, VendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine, Timeline
 from app.database.queryUtils import add_obj_to_db
 
 
@@ -47,6 +47,7 @@ def tester(client: FlaskClient) -> StockTester:
 def test_view_stocks(tester: StockTester) -> None:
     response = tester.get_all_stocks()
     assert tester.expect(response, 200) or tester.expect(response, 204)
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)
@@ -67,6 +68,7 @@ def test_add_stocks(tester: StockTester) -> None:
     assert tester.expect(response, 200) or tester.expect(response, 204)
     assert prod_after_added_stock.product_quantity + test_stock.quantity == 10
     assert test_stock is not None
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)
@@ -86,6 +88,7 @@ def test_add_stocks_fail(tester: StockTester) -> None:
     response_2 = tester.add_stocks(test_data_2)
     assert tester.expect(response_1, 400)
     assert tester.expect(response_2, 400)
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)
@@ -114,6 +117,7 @@ def test_edit_stocks(tester: StockTester) -> None:
     assert tester.expect(response, 200) or tester.expect(response, 204)
     assert prod_after_added_stock.product_quantity + test_stock.quantity == 10
     assert test_stock.quantity == test_data["quantity"]
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)
@@ -140,6 +144,7 @@ def test_edit_stocks_fail(tester: StockTester) -> None:
     stock_after_edit = get_test_entry(MachineStock)
     assert prod_after_added_stock.product_quantity + stock_after_edit.quantity == 10
     assert to_be_edit_stock.quantity == stock_after_edit.quantity
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)
@@ -162,6 +167,7 @@ def test_delete_stocks(tester: StockTester) -> None:
     after_delete_stock = get_test_entry(MachineStock)
     assert tester.expect(response, 200) or tester.expect(response, 204)
     assert after_delete_stock is None
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)
@@ -184,6 +190,7 @@ def test_delete_stocks_fail(tester: StockTester) -> None:
     after_delete_stock = get_test_entry(MachineStock)
     assert tester.expect(response, 400)
     assert after_delete_stock is not None
+    clear_db(Timeline)
     clear_db(MachineStock)
     clear_db(Products)
     clear_db(VendingMachine)

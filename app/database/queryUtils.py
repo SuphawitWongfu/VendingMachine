@@ -3,7 +3,7 @@ from typing import Dict, Iterable, List, Type
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.database.engine import Session
-from app.database.schema import MachineStock, Products, VendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine, Timeline
 
 """
 this file contains utilities functions for CRUD operation in the database
@@ -51,8 +51,9 @@ def select_obj(
 
 
 def select_obj_list(
-    table_name: VendingMachine | Products | MachineStock, search_params: Dict[str, str]
-) -> List[VendingMachine | Products | MachineStock]:
+    table_name: VendingMachine | Products | MachineStock | Timeline,
+    search_params: Dict[str, str],
+) -> List[VendingMachine | Products | MachineStock | Timeline]:
     session = Session()
     obj_list = None
     try:
