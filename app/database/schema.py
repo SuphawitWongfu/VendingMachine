@@ -1,9 +1,10 @@
 """This file contain all tables of the database."""
 
 import datetime as dt
+from dataclasses import dataclass
 from typing import Dict
 
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, JSON
 
 from app.database.engine import Base, Engine
 
@@ -89,3 +90,28 @@ class MachineStock(Base):
             "quantity": self.quantity,
         }
         return query_dict
+
+
+@dataclass
+class Timeline(Base):
+    machine_id: int
+    product_id: int
+    method: str
+    machine_state: JSON
+    time_line: DateTime
+
+    __tablename__ = "machine_timeline"
+    id = Column(Integer, primary_key=True)
+    machine_id = Column(
+        Integer,
+        ForeignKey("vending_machines.id"),
+        nullable=False,
+    )
+    product_id = Column(
+        Integer,
+        ForeignKey("products.id"),
+        nullable=False,
+    )
+    method = Column(String(100), nullable=False)
+    machine_state = Column(JSON, nullable=True)
+    time_line = Column(DateTime)
