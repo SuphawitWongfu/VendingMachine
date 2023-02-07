@@ -5,7 +5,7 @@ from flask.testing import FlaskClient
 from werkzeug.test import TestResponse
 
 from app.tests.conftest import Tester, clear_db, get_test_entry
-from app.database.schema import Products
+from app.database.schema import Products, Timeline
 
 
 class ProductTester(Tester):
@@ -36,6 +36,7 @@ def tester(client: FlaskClient) -> ProductTester:
 def test_view_products(tester: ProductTester) -> None:
     response = tester.get_all_products()
     assert Tester.expect(response, 200) or Tester.expect(response, 204)
+    clear_db(Timeline)
     clear_db(Products)
 
 
@@ -50,12 +51,14 @@ def test_add_product(tester: ProductTester) -> None:
     response = tester.add_product(test_data)
     assert Tester.expect(response, 200) or Tester.expect(response, 204)
     assert len(response.json) != 0
+    clear_db(Timeline)
     clear_db(Products)
 
 
 def test_add_product_fail(tester: ProductTester) -> None:
     response = tester.add_product({})
     assert Tester.expect(response, 400)
+    clear_db(Timeline)
     clear_db(Products)
 
 
@@ -83,6 +86,7 @@ def test_edit_product(tester: ProductTester) -> None:
     assert after_edit_prod.product_quantity == test_data["product_quantity"]
     assert after_edit_prod.product_code == test_data["product_code"]
     assert after_edit_prod.price_per_unit == test_data["price_per_unit"]
+    clear_db(Timeline)
     clear_db(Products)
 
 
@@ -108,6 +112,7 @@ def test_edit_product_fail(tester: ProductTester) -> None:
     assert after_edit_prod.product_quantity == to_be_edit_prod.product_quantity
     assert after_edit_prod.product_code == to_be_edit_prod.product_code
     assert after_edit_prod.price_per_unit == to_be_edit_prod.price_per_unit
+    clear_db(Timeline)
     clear_db(Products)
 
 
@@ -126,6 +131,7 @@ def test_delete_product(tester: ProductTester) -> None:
     after_delete_prod = get_test_entry(Products)
     assert Tester.expect(response, 200) or Tester.expect(response, 204)
     assert after_delete_prod is None
+    clear_db(Timeline)
     clear_db(Products)
 
 
@@ -143,4 +149,5 @@ def test_db_delete_product_fail(tester: ProductTester) -> None:
     after_delete_prod = get_test_entry(Products)
     assert Tester.expect(response, 400)
     assert after_delete_prod is not None
+    clear_db(Timeline)
     clear_db(Products)
