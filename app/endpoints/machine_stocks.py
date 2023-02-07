@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from flask import Blueprint, Response, jsonify, redirect, request, url_for
 from sqlalchemy.exc import SQLAlchemyError
+import datetime as dt
 
 from app.database.engine import Session
 from app.database.queryUtils import (
@@ -18,7 +19,7 @@ from app.database.queryUtils import (
     update_database_row_by_id,
     update_warehouse_quantity,
 )
-from app.database.schema import MachineStock, Products, VendingMachine
+from app.database.schema import MachineStock, Products, VendingMachine, Timeline
 
 view_machine_stock_endpoint = "machine_stocks.view_machine_stocks"
 
@@ -89,7 +90,14 @@ def add_machine_stocks() -> Response:
         int(query_strings["product_id"]),
         int(query_strings["quantity"]),
     )
+    new_stock_timeline = Timeline(
+        machine_id=int(query_strings["machine_id"]),
+        product_id=int(query_strings["product_id"]),
+        quantity=int(query_strings["quantity"]),
+        time_line=dt.datetime.utcnow(),
+    )
     add_obj_to_db(new_machine_stock)
+    add_obj_to_db(new_stock_timeline)
     update_warehouse_quantity(query_strings["product_id"], 0, query_strings["quantity"])
 
     return redirect(url_for(view_machine_stock_endpoint))
@@ -121,6 +129,13 @@ def edit_machine_stock() -> Response:
         )
         if quantity_validation is not None:
             update_database_row_by_id(MachineStock, query_strings)
+            new_stock_timeline = Timeline(
+                machine_id=int(stock_obj.machine_id),
+                product_id=int(stock_obj.product_id),
+                quantity=int(query_strings["quantity"]),
+                time_line=dt.datetime.utcnow(),
+            )
+            add_obj_to_db(new_stock_timeline)
 
     return redirect(url_for(view_machine_stock_endpoint))
 
@@ -136,6 +151,14 @@ def delete_machine_stock() -> Response:
         update_warehouse_quantity(
             unwanted_product.product_id, unwanted_product.quantity, 0
         )
+
+        new_stock_timeline = Timeline(
+            machine_id=int(unwanted_product.machine_id),
+            product_id=int(unwanted_product.product_id),
+            quantity=0,
+            time_line=dt.datetime.utcnow(),
+        )
+        add_obj_to_db(new_stock_timeline)
         delete_obj_from_db(unwanted_product)
     return redirect(url_for(view_machine_stock_endpoint))
 

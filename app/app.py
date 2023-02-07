@@ -3,6 +3,7 @@ from flask_wtf import CSRFProtect
 
 from app.database.db import mysql_uri, secret_key
 from app.database.engine import Base, Engine
+from app.endpoints.stock_timelines import stock_timelines
 from app.endpoints.machine_stocks import machine_stocks
 from app.endpoints.products import products
 from app.endpoints.vending_machine import vending_machine
@@ -24,6 +25,8 @@ def create_app() -> Flask:
     app.register_blueprint(products)
 
     app.register_blueprint(machine_stocks)
+
+    app.register_blueprint(stock_timelines)
 
     app.secret_key = secret_key
 
