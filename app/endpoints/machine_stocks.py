@@ -90,13 +90,14 @@ def add_machine_stocks() -> Response:
         int(query_strings["product_id"]),
         int(query_strings["quantity"]),
     )
+    add_obj_to_db(new_machine_stock)
     new_stock_timeline = Timeline(
         machine_id=int(query_strings["machine_id"]),
         product_id=int(query_strings["product_id"]),
         quantity=int(query_strings["quantity"]),
+        state=jsonify(create_listing(query_strings["machine_id"])).json,
         time_line=dt.datetime.utcnow(),
     )
-    add_obj_to_db(new_machine_stock)
     add_obj_to_db(new_stock_timeline)
     update_warehouse_quantity(query_strings["product_id"], 0, query_strings["quantity"])
 
@@ -133,6 +134,7 @@ def edit_machine_stock() -> Response:
                 machine_id=int(stock_obj.machine_id),
                 product_id=int(stock_obj.product_id),
                 quantity=int(query_strings["quantity"]),
+                state=jsonify(create_listing(stock_obj.machine_id)).json,
                 time_line=dt.datetime.utcnow(),
             )
             add_obj_to_db(new_stock_timeline)
@@ -151,15 +153,16 @@ def delete_machine_stock() -> Response:
         update_warehouse_quantity(
             unwanted_product.product_id, unwanted_product.quantity, 0
         )
-
+        delete_obj_from_db(unwanted_product)
         new_stock_timeline = Timeline(
             machine_id=int(unwanted_product.machine_id),
             product_id=int(unwanted_product.product_id),
             quantity=0,
+            state=jsonify(create_listing(str(unwanted_product.machine_id))).json,
             time_line=dt.datetime.utcnow(),
         )
         add_obj_to_db(new_stock_timeline)
-        delete_obj_from_db(unwanted_product)
+
     return redirect(url_for(view_machine_stock_endpoint))
 
 

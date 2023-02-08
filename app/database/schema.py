@@ -4,7 +4,7 @@ import datetime as dt
 from dataclasses import dataclass
 from typing import Dict
 
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, JSON
 
 from app.database.engine import Base, Engine
 
@@ -97,22 +97,25 @@ class Timeline(Base):
     machine_id: int
     product_id: int
     quantity: int
+    state: JSON
     time_line: dt.datetime
 
     __tablename__ = "machine_timeline"
     id = Column(Integer, primary_key=True)
     machine_id = Column(
         Integer,
-        ForeignKey("vending_machines.id"),
         nullable=False,
     )
     product_id = Column(
         Integer,
-        ForeignKey("products.id"),
         nullable=False,
     )
     quantity = Column(
         Integer,
+        nullable=False,
+    )
+    state = Column(
+        JSON,
         nullable=False,
     )
     time_line = Column(DateTime)
