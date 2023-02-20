@@ -1,0 +1,248 @@
+openapi: "3.0.2"
+info:
+  title: API Title
+  version: "1.0"
+servers:
+  - url: /
+tags:
+  - name: Vending Machines
+    description: Vending Machine endpoints
+  - name: Products
+    description: Products endpoints
+  - name: Stocks
+    description: Stocks endpoints
+  - name: Timestamps
+    description: Timestamps endpoints
+paths:
+  /vendings/:
+    description: 'get all vending machines'
+    get:
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'vending machine table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products'
+        204:
+          description: 'vending machines table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /add_vendings/:
+    description: 'add a vending machine'
+    parameters:
+        - in: query
+          name: machine_name
+          schema:
+            type: string
+          description: The name of the vending machine
+        - in: query
+          name: machine_location
+          schema:
+            type: string
+          description: The location of the vending machine
+    post:
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'vending machines table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /edit_vendings/:
+    description: 'edit a vending machine specify by id'
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+        - in: query
+          name: machine_name
+          schema:
+            type: string
+          description: The name of the vending machine
+        - in: query
+          name: machine_location
+          schema:
+            type: string
+          description: The location of the vending machine
+    post:
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'successfully edited'
+        204:
+          description: 'vending machines table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /delete_vendings/:
+    description: 'delete a vending machine specify by id'
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+    delete:
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'successfully deleted'
+        204:
+          description: 'vending machines table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
+  /products/:
+    description: 'get all products'
+    get:
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'product table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products'
+        204:
+          description: 'products table are empty'
+  /add_products/:
+    description: 'get all vending machines'
+    post:
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'ok'
+  /edit_products/:
+    description: 'get all vending machines'
+    post:
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'ok'
+  /delete_products/:
+    description: 'get all vending machines'
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+    delete:
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'ok'
+
+  /machine_stocks/:
+    description: 'get all stocks'
+    get:
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'stocks table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products'
+        204:
+          description: 'stoacks table are empty'
+  /add_machine_stocks/:
+    description: 'get all vending machines'
+    post:
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'ok'
+  /edit_machine_stocks/:
+    description: 'get all vending machines'
+    post:
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'ok'
+  /delete_machine_stocks/:
+    description: 'get all vending machines'
+    delete:
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'ok'
+  /inspect_stocks/:
+    description: 'get all vending machines'
+    get:
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'ok'
+
+  /get_product_timestamps/:
+    description: 'get timestamps of all products in everymachines'
+    get:
+      tags:
+        - Timestamps
+      responses:
+        200:
+          description: 'timestamps table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products'
+        204:
+          description: 'timestamps table are empty'
+  /get_quantity_timestamps/:
+    description: 'get timestamps of all quantity of a product in everymachines'
+    get:
+      tags:
+        - Timestamps
+      responses:
+        200:
+          description: 'timestamps table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products'
+        204:
+          description: 'timestamps table are empty'
+
+
+components:
+  schemas:
+    sample_products:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]

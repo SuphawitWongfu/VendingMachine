@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_wtf import CSRFProtect
+from flask_swagger_ui import get_swaggerui_blueprint
 
 from app.database.db import mysql_uri, secret_key
 from app.database.engine import Base, Engine
@@ -18,7 +19,15 @@ def create_app() -> Flask:
     csrf = CSRFProtect()
     csrf.init_app(app)
 
+    SWAGGER_URL = "/swagger"
+    API_URL = "/static/apiDoc.yaml"
+    SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
+        SWAGGER_URL, API_URL, config={"app_name": "Vending Machine"}
+    )
+
     # register Blueprints
+
+    app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix=SWAGGER_URL)
 
     app.register_blueprint(vending_machine)
 
