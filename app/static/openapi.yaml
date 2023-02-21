@@ -316,13 +316,23 @@ paths:
         405:
           description: 'method not allowed'
   /inspect_stocks/:
-    description: 'get all vending machines'
+    description: 'inspect porducts in a machine'
+    parameters:
+        - in: query
+          name: machine_id
+          schema:
+            type: integer
+          description: The machine id of the machine you want to inspect stocks
     get:
       tags:
         - Stocks
       responses:
         200:
-          description: 'successfully added'
+          description: 'stocks are available'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_inspect'
         204:
           description: 'table is empty'
         400:
@@ -332,6 +342,12 @@ paths:
 
   /get_product_timestamps/:
     description: 'get timestamps of all products in everymachines'
+    parameters:
+        - in: query
+          name: machine_id
+          schema:
+            type: integer
+          description: The machine id of the machine you want to see the timestamps
     get:
       tags:
         - Timestamps
@@ -350,6 +366,12 @@ paths:
           description: 'method not allowed'
   /get_quantity_timestamps/:
     description: 'get timestamps of all quantity of a product in everymachines'
+    parameters:
+        - in: query
+          name: product_id
+          schema:
+            type: integer
+          description: The product id of a product you want to see the timestamps
     get:
       tags:
         - Timestamps
@@ -420,52 +442,133 @@ components:
       ]
     sample_inspect:
       type: object
-      example: [{
-        "id": 1,
-        "price_per_unit": 1.0,
-        "product_code": 0,
-        "product_name": "test_product_1",
-        "product_quantity": 1
-        },
-        {
-        "id": 2,
-        "price_per_unit": 1.0,
-        "product_code": 1,
-        "product_name": "test_product_2",
-        "product_quantity": 1
-        }
+      example: {
+        "machine_id": 2,
+        "machine_name": "machine_2",
+        "products": [
+          {
+            "id": 5,
+            "price_per_unit": 5,
+            "product_code": 0,
+            "product_name": "product_0",
+            "product_quantity": 2
+          },
+          {
+            "id": 9,
+            "price_per_unit": 5,
+            "product_code": 2,
+            "product_name": "product_2",
+            "product_quantity": 1
+          }
         ]
+      }
     sample_products_stamp:
       type: object
-      example: [{
-        "id": 1,
-        "price_per_unit": 1.0,
-        "product_code": 0,
-        "product_name": "test_product_1",
-        "product_quantity": 1
+      example: [
+        {
+          "date": "Tue, 21 Feb 2023 05:43:45 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 8,
+              "price_per_unit": 5,
+              "product_code": 1,
+              "product_name": "product_1",
+              "product_quantity": 9
+            }
+          ]
         },
         {
-        "id": 2,
-        "price_per_unit": 1.0,
-        "product_code": 1,
-        "product_name": "test_product_2",
-        "product_quantity": 1
+          "date": "Tue, 21 Feb 2023 05:57:23 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 8,
+              "price_per_unit": 5,
+              "product_code": 1,
+              "product_name": "product_1",
+              "product_quantity": 9
+            },
+            {
+              "id": 5,
+              "price_per_unit": 5,
+              "product_code": 0,
+              "product_name": "product_0",
+              "product_quantity": 2
+            }
+          ]
+        },
+        {
+          "date": "Tue, 21 Feb 2023 05:59:00 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 8,
+              "price_per_unit": 5,
+              "product_code": 1,
+              "product_name": "product_1",
+              "product_quantity": 9
+            },
+            {
+              "id": 5,
+              "price_per_unit": 5,
+              "product_code": 0,
+              "product_name": "product_0",
+              "product_quantity": 2
+            },
+            {
+              "id": 9,
+              "price_per_unit": 5,
+              "product_code": 2,
+              "product_name": "product_2",
+              "product_quantity": 1
+            }
+          ]
+        },
+        {
+          "date": "Tue, 21 Feb 2023 05:59:23 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 5,
+              "price_per_unit": 5,
+              "product_code": 0,
+              "product_name": "product_0",
+              "product_quantity": 2
+            },
+            {
+              "id": 9,
+              "price_per_unit": 5,
+              "product_code": 2,
+              "product_name": "product_2",
+              "product_quantity": 1
+            }
+          ]
         }
-        ]
+      ]
     sample_quantity_stamps:
       type: object
-      example: [{
-        "id": 1,
-        "price_per_unit": 1.0,
-        "product_code": 0,
-        "product_name": "test_product_1",
-        "product_quantity": 1
+      example: [
+        {
+          "machine_id": 1,
+          "product_id": 5,
+          "quantity": 1,
+          "time_line": "Tue, 21 Feb 2023 05:42:39 GMT"
         },
         {
-        "id": 2,
-        "price_per_unit": 1.0,
-        "product_code": 1,
-        "product_name": "test_product_2",
-        "product_quantity": 1
+          "machine_id": 1,
+          "product_id": 5,
+          "quantity": 0,
+          "time_line": "Tue, 21 Feb 2023 05:47:38 GMT"
+        },
+        {
+          "machine_id": 2,
+          "product_id": 5,
+          "quantity": 2,
+          "time_line": "Tue, 21 Feb 2023 05:57:23 GMT"
         }
-        ]
+      ]
