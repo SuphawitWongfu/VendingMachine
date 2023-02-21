@@ -120,6 +120,10 @@ paths:
                 $ref: '#/components/schemas/sample_products'
         204:
           description: 'products table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /add_products/:
     description: 'get all vending machines'
     post:
@@ -127,7 +131,13 @@ paths:
         - Products
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'products table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /edit_products/:
     description: 'get all vending machines'
     post:
@@ -135,7 +145,13 @@ paths:
         - Products
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'products table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /delete_products/:
     description: 'get all vending machines'
     parameters:
@@ -148,7 +164,13 @@ paths:
         - Products
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'products table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
 
   /machine_stocks/:
     description: 'get all stocks'
@@ -164,6 +186,11 @@ paths:
                 $ref: '#/components/schemas/sample_products'
         204:
           description: 'stoacks table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
   /add_machine_stocks/:
     description: 'get all vending machines'
     post:
@@ -171,7 +198,13 @@ paths:
         - Stocks
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'stocks table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /edit_machine_stocks/:
     description: 'get all vending machines'
     post:
@@ -179,7 +212,13 @@ paths:
         - Stocks
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'stocks table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /delete_machine_stocks/:
     description: 'get all vending machines'
     delete:
@@ -187,7 +226,13 @@ paths:
         - Stocks
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'stocks table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /inspect_stocks/:
     description: 'get all vending machines'
     get:
@@ -195,7 +240,13 @@ paths:
         - Stocks
       responses:
         200:
-          description: 'ok'
+          description: 'successfully added'
+        204:
+          description: 'stocks table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
 
   /get_product_timestamps/:
     description: 'get timestamps of all products in everymachines'
@@ -211,6 +262,10 @@ paths:
                 $ref: '#/components/schemas/sample_products'
         204:
           description: 'timestamps table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
   /get_quantity_timestamps/:
     description: 'get timestamps of all quantity of a product in everymachines'
     get:
@@ -225,6 +280,10 @@ paths:
                 $ref: '#/components/schemas/sample_products'
         204:
           description: 'timestamps table are empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
 
 
 components:
