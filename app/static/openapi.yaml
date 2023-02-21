@@ -15,8 +15,8 @@ tags:
     description: Timestamps endpoints
 paths:
   /vendings/:
-    description: 'get all vending machines'
     get:
+      description: 'get all vending machines'
       tags:
         - Vending Machines
       responses:
@@ -33,7 +33,6 @@ paths:
         405:
           description: 'method not allowed'
   /add_vendings/:
-    description: 'add a vending machine'
     parameters:
         - in: query
           name: machine_name
@@ -46,6 +45,7 @@ paths:
             type: string
           description: The location of the vending machine
     post:
+      description: 'add a vending machine'
       tags:
         - Vending Machines
       responses:
@@ -58,7 +58,6 @@ paths:
         405:
           description: 'method not allowed'
   /edit_vendings/:
-    description: 'edit a vending machine specify by id'
     parameters:
         - in: query
           name: id
@@ -75,6 +74,7 @@ paths:
             type: string
           description: The location of the vending machine
     post:
+      description: 'edit a vending machine specify by id'
       tags:
         - Vending Machines
       responses:
@@ -87,7 +87,6 @@ paths:
         405:
           description: 'method not allowed'
   /delete_vendings/:
-    description: 'delete a vending machine specify by id'
     parameters:
         - in: query
           name: id
@@ -95,6 +94,7 @@ paths:
             type: integer
           description: The id of the vending machine
     delete:
+      description: 'delete a vending machine specify by id'
       tags:
         - Vending Machines
       responses:
@@ -108,8 +108,8 @@ paths:
           description: 'method not allowed'
 
   /products/:
-    description: 'get all products'
     get:
+      description: 'get all products'
       tags:
         - Products
       responses:
@@ -126,7 +126,6 @@ paths:
         405:
           description: 'method not allowed'
   /add_products/:
-    description: 'get all products'
     parameters:
         - in: query
           name: product_name
@@ -149,6 +148,7 @@ paths:
             type: integer
           description: The price of the product
     post:
+      description: 'add a product'
       tags:
         - Products
       responses:
@@ -161,7 +161,6 @@ paths:
         405:
           description: 'method not allowed'
   /edit_products/:
-    description: 'get all vending machines'
     parameters:
         - in: query
           name: id
@@ -189,6 +188,7 @@ paths:
             type: integer
           description: The price of the product
     post:
+      description: 'edit a product specify by id'
       tags:
         - Products
       responses:
@@ -201,7 +201,6 @@ paths:
         405:
           description: 'method not allowed'
   /delete_products/:
-    description: 'get all vending machines'
     parameters:
         - in: query
           name: id
@@ -209,6 +208,7 @@ paths:
             type: integer
           description: The id of the product
     delete:
+      description: 'delete a product specify by id'
       tags:
         - Products
       responses:
@@ -222,8 +222,8 @@ paths:
           description: 'method not allowed'
 
   /machine_stocks/:
-    description: 'get all stocks'
     get:
+      description: 'get all stocks'
       tags:
         - Stocks
       responses:
@@ -241,7 +241,6 @@ paths:
           description: 'method not allowed'
 
   /add_machine_stocks/:
-    description: 'get all stocks'
     parameters:
         - in: query
           name: machine_id
@@ -259,6 +258,7 @@ paths:
             type: integer
           description: The quantity of the product you want to add to the machine
     post:
+      description: 'add a stock'
       tags:
         - Stocks
       responses:
@@ -271,7 +271,6 @@ paths:
         405:
           description: 'method not allowed'
   /edit_machine_stocks/:
-    description: 'edit a stock'
     parameters:
         - in: query
           name: id
@@ -284,6 +283,7 @@ paths:
             type: integer
           description: The new quantity of the product in the machine
     post:
+      description: 'edit a stock specify by id'
       tags:
         - Stocks
       responses:
@@ -296,7 +296,6 @@ paths:
         405:
           description: 'method not allowed'
   /delete_machine_stocks/:
-    description: 'delete a stock specify by id'
     parameters:
         - in: query
           name: id
@@ -304,6 +303,7 @@ paths:
             type: integer
           description: The id of the stock entry
     delete:
+      description: 'delete a stock specify by id'
       tags:
         - Stocks
       responses:
@@ -316,7 +316,6 @@ paths:
         405:
           description: 'method not allowed'
   /inspect_stocks/:
-    description: 'inspect porducts in a machine'
     parameters:
         - in: query
           name: machine_id
@@ -324,6 +323,7 @@ paths:
             type: integer
           description: The machine id of the machine you want to inspect stocks
     get:
+      description: 'inspect products in a machine'
       tags:
         - Stocks
       responses:
@@ -341,7 +341,6 @@ paths:
           description: 'method not allowed'
 
   /get_product_timestamps/:
-    description: 'get timestamps of all products in everymachines'
     parameters:
         - in: query
           name: machine_id
@@ -349,6 +348,7 @@ paths:
             type: integer
           description: The machine id of the machine you want to see the timestamps
     get:
+      description: 'get timestamps of all products in every machines'
       tags:
         - Timestamps
       responses:
@@ -365,7 +365,6 @@ paths:
         405:
           description: 'method not allowed'
   /get_quantity_timestamps/:
-    description: 'get timestamps of all quantity of a product in everymachines'
     parameters:
         - in: query
           name: product_id
@@ -373,6 +372,7 @@ paths:
             type: integer
           description: The product id of a product you want to see the timestamps
     get:
+      description: 'get timestamps of all quantity of a product in every machines'
       tags:
         - Timestamps
       responses:
