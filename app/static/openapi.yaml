@@ -93,6 +93,7 @@ paths:
           name: id
           schema:
             type: integer
+          description: The id of the vending machine
     delete:
       tags:
         - Vending Machines
@@ -125,7 +126,28 @@ paths:
         405:
           description: 'method not allowed'
   /add_products/:
-    description: 'get all vending machines'
+    description: 'get all products'
+    parameters:
+        - in: query
+          name: product_name
+          schema:
+            type: string
+          description: The name of the product
+        - in: query
+          name: product_code
+          schema:
+            type: integer
+          description: The code of the product use to uniquely idendify each of them
+        - in: query
+          name: product_quantity
+          schema:
+            type: integer
+          description: The quantity of the product
+        - in: query
+          name: price_per_unit
+          schema:
+            type: integer
+          description: The price of the product
     post:
       tags:
         - Products
@@ -140,6 +162,32 @@ paths:
           description: 'method not allowed'
   /edit_products/:
     description: 'get all vending machines'
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the product
+        - in: query
+          name: product_name
+          schema:
+            type: string
+          description: The name of the product
+        - in: query
+          name: product_code
+          schema:
+            type: integer
+          description: The code of the product use to uniquely idendify each of them
+        - in: query
+          name: product_quantity
+          schema:
+            type: integer
+          description: The quantity of the product
+        - in: query
+          name: price_per_unit
+          schema:
+            type: integer
+          description: The price of the product
     post:
       tags:
         - Products
@@ -159,6 +207,7 @@ paths:
           name: id
           schema:
             type: integer
+          description: The id of the product
     delete:
       tags:
         - Products
@@ -192,7 +241,23 @@ paths:
           description: 'method not allowed'
 
   /add_machine_stocks/:
-    description: 'get all vending machines'
+    description: 'get all stocks'
+    parameters:
+        - in: query
+          name: machine_id
+          schema:
+            type: integer
+          description: The id of the machine
+        - in: query
+          name: product_id
+          schema:
+            type: integer
+          description: The id of the product
+        - in: query
+          name: quantity
+          schema:
+            type: integer
+          description: The quantity of the product you want to add to the machine
     post:
       tags:
         - Stocks
@@ -206,7 +271,18 @@ paths:
         405:
           description: 'method not allowed'
   /edit_machine_stocks/:
-    description: 'get all vending machines'
+    description: 'edit a stock'
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the stock entry
+        - in: query
+          name: quantity
+          schema:
+            type: integer
+          description: The new quantity of the product in the machine
     post:
       tags:
         - Stocks
@@ -220,7 +296,13 @@ paths:
         405:
           description: 'method not allowed'
   /delete_machine_stocks/:
-    description: 'get all vending machines'
+    description: 'delete a stock specify by id'
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the stock entry
     delete:
       tags:
         - Stocks
@@ -322,21 +404,20 @@ components:
         ]
     sample_stocks:
       type: object
-      example: [{
-        "id": 1,
-        "price_per_unit": 1.0,
-        "product_code": 0,
-        "product_name": "test_product_1",
-        "product_quantity": 1
+      example: [
+        {
+          "id": 1,
+          "machine_id": 1,
+          "product_id": 5,
+          "quantity": 5
         },
         {
-        "id": 2,
-        "price_per_unit": 1.0,
-        "product_code": 1,
-        "product_name": "test_product_2",
-        "product_quantity": 1
+          "id": 2,
+          "machine_id": 2,
+          "product_id": 8,
+          "quantity": 8
         }
-        ]
+      ]
     sample_inspect:
       type: object
       example: [{

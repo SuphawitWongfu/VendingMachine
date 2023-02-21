@@ -91,4 +91,4 @@ def delete_vending_machine() -> Response:
         delete_obj_from_db(obj)
     unwanted_product = select_obj(Products, {"id": query_strings["id"]})
     delete_obj_from_db(unwanted_product)
-    return redirect(url_for(view_product_endpoint))
+    return redirect(url_for(view_product_endpoint), code=303)
