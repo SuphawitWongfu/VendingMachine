@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
-  title: API Title
-  version: "1.0"
+  title: Vending Machine
+  version: "6.9"
 servers:
   - url: /
 tags:
@@ -25,7 +25,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sample_products'
+                $ref: '#/components/schemas/sample_machines'
         204:
           description: 'vending machines table are empty'
         400:
@@ -183,7 +183,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sample_products'
+                $ref: '#/components/schemas/sample_stocks'
         204:
           description: 'stoacks table are empty'
         400:
@@ -259,7 +259,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sample_products'
+                $ref: '#/components/schemas/sample_products_stamp'
         204:
           description: 'timestamps table are empty'
         400:
@@ -277,7 +277,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sample_products'
+                $ref: '#/components/schemas/sample_quantity_stamps'
         204:
           description: 'timestamps table are empty'
         400:
@@ -289,6 +289,91 @@ paths:
 components:
   schemas:
     sample_products:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]
+    sample_machines:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]
+    sample_stocks:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]
+    sample_inspect:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]
+    sample_products_stamp:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]
+    sample_quantity_stamps:
       type: object
       example: [{
         "id": 1,
