@@ -20,7 +20,7 @@ def create_app() -> Flask:
     csrf.init_app(app)
 
     SWAGGER_URL = "/swagger"
-    API_URL = "/static/index.yaml"
+    API_URL = "/static/openapi.yaml"
     SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
         SWAGGER_URL, API_URL, config={"app_name": "Vending Machine"}
     )
