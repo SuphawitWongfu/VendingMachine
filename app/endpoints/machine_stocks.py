@@ -163,7 +163,7 @@ def delete_machine_stock() -> Response:
         )
         add_obj_to_db(new_stock_timeline)
 
-    return redirect(url_for(view_machine_stock_endpoint))
+    return redirect(url_for(view_machine_stock_endpoint), code=303)
 
 
 """

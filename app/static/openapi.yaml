@@ -1,0 +1,574 @@
+openapi: "3.0.2"
+info:
+  title: Vending Machine
+  version: "6.9"
+servers:
+  - url: /
+tags:
+  - name: Vending Machines
+    description: Vending Machine endpoints
+  - name: Products
+    description: Products endpoints
+  - name: Stocks
+    description: Stocks endpoints
+  - name: Timestamps
+    description: Timestamps endpoints
+paths:
+  /vendings/:
+    get:
+      description: 'get all vending machines'
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'vending machine table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_machines'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /add_vendings/:
+    parameters:
+        - in: query
+          name: machine_name
+          schema:
+            type: string
+          description: The name of the vending machine
+        - in: query
+          name: machine_location
+          schema:
+            type: string
+          description: The location of the vending machine
+    post:
+      description: 'add a vending machine'
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /edit_vendings/:
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+        - in: query
+          name: machine_name
+          schema:
+            type: string
+          description: The name of the vending machine
+        - in: query
+          name: machine_location
+          schema:
+            type: string
+          description: The location of the vending machine
+    post:
+      description: 'edit a vending machine specify by id'
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'successfully edited'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /delete_vendings/:
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the vending machine
+    delete:
+      description: 'delete a vending machine specify by id'
+      tags:
+        - Vending Machines
+      responses:
+        200:
+          description: 'successfully deleted'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
+  /products/:
+    get:
+      description: 'get all products'
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'product table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /add_products/:
+    parameters:
+        - in: query
+          name: product_name
+          schema:
+            type: string
+          description: The name of the product
+        - in: query
+          name: product_code
+          schema:
+            type: integer
+          description: The code of the product use to uniquely idendify each of them
+        - in: query
+          name: product_quantity
+          schema:
+            type: integer
+          description: The quantity of the product
+        - in: query
+          name: price_per_unit
+          schema:
+            type: integer
+          description: The price of the product
+    post:
+      description: 'add a product'
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /edit_products/:
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the product
+        - in: query
+          name: product_name
+          schema:
+            type: string
+          description: The name of the product
+        - in: query
+          name: product_code
+          schema:
+            type: integer
+          description: The code of the product use to uniquely idendify each of them
+        - in: query
+          name: product_quantity
+          schema:
+            type: integer
+          description: The quantity of the product
+        - in: query
+          name: price_per_unit
+          schema:
+            type: integer
+          description: The price of the product
+    post:
+      description: 'edit a product specify by id'
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /delete_products/:
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the product
+    delete:
+      description: 'delete a product specify by id'
+      tags:
+        - Products
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
+  /machine_stocks/:
+    get:
+      description: 'get all stocks'
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'stocks table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_stocks'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
+  /add_machine_stocks/:
+    parameters:
+        - in: query
+          name: machine_id
+          schema:
+            type: integer
+          description: The id of the machine
+        - in: query
+          name: product_id
+          schema:
+            type: integer
+          description: The id of the product
+        - in: query
+          name: quantity
+          schema:
+            type: integer
+          description: The quantity of the product you want to add to the machine
+    post:
+      description: 'add a stock'
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /edit_machine_stocks/:
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the stock entry
+        - in: query
+          name: quantity
+          schema:
+            type: integer
+          description: The new quantity of the product in the machine
+    post:
+      description: 'edit a stock specify by id'
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /delete_machine_stocks/:
+    parameters:
+        - in: query
+          name: id
+          schema:
+            type: integer
+          description: The id of the stock entry
+    delete:
+      description: 'delete a stock specify by id'
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'successfully added'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /inspect_stocks/:
+    parameters:
+        - in: query
+          name: machine_id
+          schema:
+            type: integer
+          description: The machine id of the machine you want to inspect stocks
+    get:
+      description: 'inspect products in a machine'
+      tags:
+        - Stocks
+      responses:
+        200:
+          description: 'stocks are available'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_inspect'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
+  /get_product_timestamps/:
+    parameters:
+        - in: query
+          name: machine_id
+          schema:
+            type: integer
+          description: The machine id of the machine you want to see the timestamps
+    get:
+      description: 'get timestamps of all products in every machines'
+      tags:
+        - Timestamps
+      responses:
+        200:
+          description: 'timestamps table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_products_stamp'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+  /get_quantity_timestamps/:
+    parameters:
+        - in: query
+          name: product_id
+          schema:
+            type: integer
+          description: The product id of a product you want to see the timestamps
+    get:
+      description: 'get timestamps of all quantity of a product in every machines'
+      tags:
+        - Timestamps
+      responses:
+        200:
+          description: 'timestamps table are not empty'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sample_quantity_stamps'
+        204:
+          description: 'table is empty'
+        400:
+          description: 'bad request, something was wrong with query strings'
+        405:
+          description: 'method not allowed'
+
+
+components:
+  schemas:
+    sample_products:
+      type: object
+      example: [{
+        "id": 1,
+        "price_per_unit": 1.0,
+        "product_code": 0,
+        "product_name": "test_product_1",
+        "product_quantity": 1
+        },
+        {
+        "id": 2,
+        "price_per_unit": 1.0,
+        "product_code": 1,
+        "product_name": "test_product_2",
+        "product_quantity": 1
+        }
+        ]
+    sample_machines:
+      type: object
+      example: [{
+        "id": 1,
+        "installed_at": "Tue, 21 Feb 2023 04:46:03 GMT",
+        "location": "location_1",
+        "name": "machine_1"
+        },
+        {
+        "id": 2,
+        "installed_at": "Tue, 21 Feb 2023 04:46:10 GMT",
+        "location": "location_2",
+        "name": "machine_2"
+        }
+        ]
+    sample_stocks:
+      type: object
+      example: [
+        {
+          "id": 1,
+          "machine_id": 1,
+          "product_id": 5,
+          "quantity": 5
+        },
+        {
+          "id": 2,
+          "machine_id": 2,
+          "product_id": 8,
+          "quantity": 8
+        }
+      ]
+    sample_inspect:
+      type: object
+      example: {
+        "machine_id": 2,
+        "machine_name": "machine_2",
+        "products": [
+          {
+            "id": 5,
+            "price_per_unit": 5,
+            "product_code": 0,
+            "product_name": "product_0",
+            "product_quantity": 2
+          },
+          {
+            "id": 9,
+            "price_per_unit": 5,
+            "product_code": 2,
+            "product_name": "product_2",
+            "product_quantity": 1
+          }
+        ]
+      }
+    sample_products_stamp:
+      type: object
+      example: [
+        {
+          "date": "Tue, 21 Feb 2023 05:43:45 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 8,
+              "price_per_unit": 5,
+              "product_code": 1,
+              "product_name": "product_1",
+              "product_quantity": 9
+            }
+          ]
+        },
+        {
+          "date": "Tue, 21 Feb 2023 05:57:23 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 8,
+              "price_per_unit": 5,
+              "product_code": 1,
+              "product_name": "product_1",
+              "product_quantity": 9
+            },
+            {
+              "id": 5,
+              "price_per_unit": 5,
+              "product_code": 0,
+              "product_name": "product_0",
+              "product_quantity": 2
+            }
+          ]
+        },
+        {
+          "date": "Tue, 21 Feb 2023 05:59:00 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 8,
+              "price_per_unit": 5,
+              "product_code": 1,
+              "product_name": "product_1",
+              "product_quantity": 9
+            },
+            {
+              "id": 5,
+              "price_per_unit": 5,
+              "product_code": 0,
+              "product_name": "product_0",
+              "product_quantity": 2
+            },
+            {
+              "id": 9,
+              "price_per_unit": 5,
+              "product_code": 2,
+              "product_name": "product_2",
+              "product_quantity": 1
+            }
+          ]
+        },
+        {
+          "date": "Tue, 21 Feb 2023 05:59:23 GMT",
+          "machine_id": 2,
+          "machine_name": "machine_2",
+          "products": [
+            {
+              "id": 5,
+              "price_per_unit": 5,
+              "product_code": 0,
+              "product_name": "product_0",
+              "product_quantity": 2
+            },
+            {
+              "id": 9,
+              "price_per_unit": 5,
+              "product_code": 2,
+              "product_name": "product_2",
+              "product_quantity": 1
+            }
+          ]
+        }
+      ]
+    sample_quantity_stamps:
+      type: object
+      example: [
+        {
+          "machine_id": 1,
+          "product_id": 5,
+          "quantity": 1,
+          "time_line": "Tue, 21 Feb 2023 05:42:39 GMT"
+        },
+        {
+          "machine_id": 1,
+          "product_id": 5,
+          "quantity": 0,
+          "time_line": "Tue, 21 Feb 2023 05:47:38 GMT"
+        },
+        {
+          "machine_id": 2,
+          "product_id": 5,
+          "quantity": 2,
+          "time_line": "Tue, 21 Feb 2023 05:57:23 GMT"
+        }
+      ]
